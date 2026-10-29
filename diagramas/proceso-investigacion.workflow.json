@@ -1,0 +1,219 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Ruta del diseño metodológico cualitativo",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "external": {
+          "label": "Punto de partida"
+        },
+        "frontend": {
+          "label": "Producto"
+        },
+        "backend": {
+          "label": "Decisión metodológica"
+        },
+        "database": {
+          "label": "Instrumento de registro"
+        },
+        "cloud": {
+          "label": "Trabajo de campo"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "plantear",
+        "label": "Plantear y diseñar",
+        "focus": [
+          "problema",
+          "objetivos",
+          "opciones",
+          "matriz"
+        ],
+        "note": "Del problema y las categorías a la matriz."
+      },
+      {
+        "id": "indagar",
+        "label": "Indagar y proponer",
+        "focus": [
+          "muestreo",
+          "recoleccion",
+          "propuesta"
+        ],
+        "note": "Muestreo, recolección y análisis simultáneos hasta la propuesta."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "planteamiento",
+      "label": "Planteamiento"
+    },
+    {
+      "id": "diseno",
+      "label": "Diseño metodológico"
+    },
+    {
+      "id": "campo",
+      "label": "Campo y análisis"
+    }
+  ],
+  "phases": [
+    {
+      "id": "f-plantear",
+      "label": "Plantear",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "f-disenar",
+      "label": "Diseñar",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-indagar",
+      "label": "Indagar",
+      "fromCol": 4,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "problema",
+    "objetivos",
+    "opciones",
+    "matriz",
+    "muestreo",
+    "recoleccion",
+    "propuesta"
+  ],
+  "nodes": [
+    {
+      "id": "problema",
+      "lane": "planteamiento",
+      "col": 0,
+      "type": "external",
+      "label": "Problema y pregunta",
+      "sublabel": "paso 1",
+      "width": 140
+    },
+    {
+      "id": "objetivos",
+      "lane": "planteamiento",
+      "col": 1,
+      "type": "frontend",
+      "label": "Objetivos y categorías",
+      "sublabel": "marco teórico",
+      "width": 150
+    },
+    {
+      "id": "opciones",
+      "lane": "diseno",
+      "col": 2,
+      "type": "backend",
+      "label": "Opciones metodológicas",
+      "sublabel": "paradigma y diseño",
+      "width": 156
+    },
+    {
+      "id": "matriz",
+      "lane": "diseno",
+      "col": 3,
+      "type": "database",
+      "label": "Matriz de categorías",
+      "sublabel": "técnica por categoría",
+      "width": 150
+    },
+    {
+      "id": "muestreo",
+      "lane": "campo",
+      "col": 3,
+      "type": "backend",
+      "label": "Muestreo intencional",
+      "sublabel": "muestra inicial",
+      "width": 150
+    },
+    {
+      "id": "recoleccion",
+      "lane": "campo",
+      "col": 4,
+      "type": "cloud",
+      "label": "Recolección y análisis",
+      "sublabel": "simultáneos",
+      "width": 156
+    },
+    {
+      "id": "propuesta",
+      "lane": "campo",
+      "col": 5,
+      "type": "frontend",
+      "label": "Propuesta e informe",
+      "sublabel": "capítulo de método",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "problema-objetivos",
+      "from": "problema",
+      "to": "objetivos",
+      "variant": "emphasis"
+    },
+    {
+      "id": "objetivos-opciones",
+      "from": "objetivos",
+      "to": "opciones",
+      "variant": "emphasis"
+    },
+    {
+      "id": "opciones-matriz",
+      "from": "opciones",
+      "to": "matriz",
+      "variant": "emphasis"
+    },
+    {
+      "id": "matriz-muestreo",
+      "from": "matriz",
+      "to": "muestreo",
+      "variant": "emphasis"
+    },
+    {
+      "id": "muestreo-recoleccion",
+      "from": "muestreo",
+      "to": "recoleccion",
+      "variant": "emphasis"
+    },
+    {
+      "id": "recoleccion-propuesta",
+      "from": "recoleccion",
+      "to": "propuesta",
+      "label": "saturación",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Coherencia",
+      "items": [
+        "Paradigma, diseño y técnicas responden a la misma pregunta",
+        "Cada objetivo se alinea con una categoría"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Iteración",
+      "items": [
+        "Recolección y análisis avanzan juntos",
+        "La muestra se ajusta hasta la saturación"
+      ]
+    }
+  ]
+}

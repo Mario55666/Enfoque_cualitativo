@@ -1,0 +1,288 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Matriz de categorización: del corpus al modelo intercategorial",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "external": {
+          "label": "Fuente de datos"
+        },
+        "backend": {
+          "label": "Paso analítico"
+        },
+        "cloud": {
+          "label": "Integración categorial"
+        },
+        "database": {
+          "label": "Columna de la matriz"
+        },
+        "frontend": {
+          "label": "Resultado"
+        }
+      }
+    },
+    "animation": "trace",
+    "views": [
+      {
+        "id": "reduccion",
+        "label": "Reducción de los datos",
+        "focus": [
+          "corpus",
+          "segmentacion",
+          "agrupamiento",
+          "fragmento"
+        ],
+        "note": "Del corpus a los fragmentos empíricos."
+      },
+      {
+        "id": "codificar",
+        "label": "Código y aserto",
+        "focus": [
+          "codificacion",
+          "redaccion",
+          "codigo",
+          "aserto"
+        ],
+        "note": "Cada código se explica con un aserto anclado en la evidencia."
+      },
+      {
+        "id": "integrar",
+        "label": "Integración categorial",
+        "focus": [
+          "niveles",
+          "modelo"
+        ],
+        "note": "Subcategorías y macrocategorías forman el modelo final."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "campo",
+      "label": "Datos de campo"
+    },
+    {
+      "id": "analisis",
+      "label": "Análisis del investigador"
+    },
+    {
+      "id": "matriz",
+      "label": "Matriz de tres columnas"
+    }
+  ],
+  "phases": [
+    {
+      "id": "reduccion",
+      "label": "Reducción",
+      "fromCol": 1,
+      "toCol": 2
+    },
+    {
+      "id": "codificar",
+      "label": "Codificación",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "integrar",
+      "label": "Integración",
+      "fromCol": 5,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "groups": [
+    {
+      "id": "columnas",
+      "label": "Fila de la matriz",
+      "lane": "matriz",
+      "fromCol": 1,
+      "toCol": 4,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "corpus",
+    "segmentacion",
+    "agrupamiento",
+    "codificacion",
+    "redaccion",
+    "niveles",
+    "modelo"
+  ],
+  "nodes": [
+    {
+      "id": "corpus",
+      "lane": "campo",
+      "col": 1,
+      "type": "external",
+      "label": "Transcripciones",
+      "sublabel": "textos de campo",
+      "width": 132
+    },
+    {
+      "id": "segmentacion",
+      "lane": "analisis",
+      "col": 1,
+      "type": "backend",
+      "label": "Segmentación",
+      "sublabel": "unidades de análisis",
+      "width": 132
+    },
+    {
+      "id": "agrupamiento",
+      "lane": "analisis",
+      "col": 2,
+      "type": "backend",
+      "label": "Primer agrupamiento",
+      "sublabel": "mismo significado",
+      "width": 132
+    },
+    {
+      "id": "codificacion",
+      "lane": "analisis",
+      "col": 3,
+      "type": "backend",
+      "label": "Codificación inicial",
+      "sublabel": "código + memo",
+      "width": 132
+    },
+    {
+      "id": "redaccion",
+      "lane": "analisis",
+      "col": 4,
+      "type": "backend",
+      "label": "Redacción del aserto",
+      "sublabel": "síntesis anclada",
+      "width": 132
+    },
+    {
+      "id": "niveles",
+      "lane": "analisis",
+      "col": 5,
+      "type": "cloud",
+      "label": "Agrupamiento 2.º y 3.º",
+      "sublabel": "sub y macrocategorías",
+      "width": 164
+    },
+    {
+      "id": "fragmento",
+      "lane": "matriz",
+      "col": 1,
+      "type": "database",
+      "label": "Fragmento empírico",
+      "sublabel": "cita textual",
+      "width": 132
+    },
+    {
+      "id": "codigo",
+      "lane": "matriz",
+      "col": 3,
+      "type": "database",
+      "label": "Código",
+      "sublabel": "hasta 3 palabras",
+      "width": 132
+    },
+    {
+      "id": "aserto",
+      "lane": "matriz",
+      "col": 4,
+      "type": "database",
+      "label": "Aserto",
+      "sublabel": "voz del investigador",
+      "width": 132
+    },
+    {
+      "id": "modelo",
+      "lane": "matriz",
+      "col": 5,
+      "type": "frontend",
+      "label": "Modelo final",
+      "sublabel": "relaciones entre categorías",
+      "width": 132
+    }
+  ],
+  "edges": [
+    {
+      "id": "corpus-segmentacion",
+      "from": "corpus",
+      "to": "segmentacion",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "segmentacion-agrupamiento",
+      "from": "segmentacion",
+      "to": "agrupamiento",
+      "variant": "emphasis"
+    },
+    {
+      "id": "agrupamiento-codificacion",
+      "from": "agrupamiento",
+      "to": "codificacion",
+      "variant": "emphasis"
+    },
+    {
+      "id": "codificacion-redaccion",
+      "from": "codificacion",
+      "to": "redaccion",
+      "variant": "emphasis"
+    },
+    {
+      "id": "redaccion-niveles",
+      "from": "redaccion",
+      "to": "niveles",
+      "variant": "emphasis"
+    },
+    {
+      "id": "niveles-modelo",
+      "from": "niveles",
+      "to": "modelo",
+      "variant": "emphasis"
+    },
+    {
+      "id": "segmentacion-fragmento",
+      "from": "segmentacion",
+      "to": "fragmento",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "codificacion-codigo",
+      "from": "codificacion",
+      "to": "codigo",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "redaccion-aserto",
+      "from": "redaccion",
+      "to": "aserto",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Alineamiento categorial",
+      "items": [
+        "Cada fila une código, aserto y fragmento",
+        "El aserto explica la regla de agrupación sin desbordar la evidencia"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Inducción analítica",
+      "items": [
+        "Se parte de los datos brutos, no de la teoría",
+        "Los niveles 2.º y 3.º integran subcategorías y macrocategorías"
+      ]
+    }
+  ]
+}

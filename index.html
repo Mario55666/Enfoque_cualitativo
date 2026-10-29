@@ -1,0 +1,1615 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diseño Metodológico Cualitativo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: banda de navegación fija + columna de lectura de 1100px; cada paso del método es una sección numerada porque el orden es parte del procedimiento */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --ink:#18242c; --muted:#57656e; --line:#d6dde1;
+  --accent:#1f5f74; --accent-soft:#e3eef2; --node:#f3c77a; --node-soft:#fbefd6;
+  --alt:#d9eedd; --warn:#a4561c; --warn-soft:#fbe9dc; --ok:#2f6b3f;
+  --f-display:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11181c; --surface:#182228; --ink:#e4ebee; --muted:#9aaab2; --line:#2c3a42;
+  --accent:#7cc0d6; --accent-soft:#1d3440; --node:#c99a45; --node-soft:#3a2f1a;
+  --alt:#1f3a27; --warn:#f0a56b; --warn-soft:#3d2818; --ok:#82c896; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11181c; --surface:#182228; --ink:#e4ebee; --muted:#9aaab2; --line:#2c3a42;
+  --accent:#7cc0d6; --accent-soft:#1d3440; --node:#c99a45; --node-soft:#3a2f1a;
+  --alt:#1f3a27; --warn:#f0a56b; --warn-soft:#3d2818; --ok:#82c896; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;padding-block:10px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:17px}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;padding:5px 10px;border-radius:6px}
+nav a:hover,nav a:focus-visible{background:var(--accent-soft);color:var(--accent);outline:none}
+.intro{padding-block:36px 8px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,4.2vw,40px);line-height:1.12;margin:0 0 10px;text-wrap:balance}
+.lead{max-width:68ch;color:var(--muted);margin:0}
+section.step{padding-block:34px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+h2{font-family:var(--f-display);font-size:26px;margin:0 0 6px;text-wrap:balance}
+h3{font-size:16px;margin:26px 0 8px}
+.note{color:var(--muted);font-size:13.5px;max-width:72ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.grid2>*{min-width:0}
+label{display:block;font-weight:600;font-size:13px;margin-bottom:4px}
+.hint{font-weight:400;color:var(--muted)}
+input[type=text],input[type=number],textarea,select{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+textarea{resize:vertical;min-height:84px}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.field{display:flex;flex-direction:column}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+button{font:inherit;font-size:14px;font-weight:600;border-radius:6px;padding:8px 14px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--surface)}
+button.ghost{background:transparent;color:var(--accent)}
+button:hover{filter:brightness(1.08)}
+.toast{font-size:13px;color:var(--ok);align-self:center}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th,td{text-align:left;vertical-align:top;padding:9px 11px;border-bottom:1px solid var(--line)}
+th{background:var(--accent-soft);color:var(--ink);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+td.k{font-weight:600;width:160px}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);margin:0 4px 4px 0;white-space:nowrap}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.box h4{margin:0 0 6px;font-size:15px}
+.box ul{margin:6px 0 0;padding-left:18px}
+.box.prob{border-top:3px solid var(--muted)}
+.box.noprob{border-top:3px solid var(--accent)}
+ol.phases{counter-reset:p;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+ol.phases li{counter-increment:p;display:grid;grid-template-columns:34px 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+ol.phases li::before{content:counter(p);font-family:var(--f-mono);font-weight:600;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--surface);display:grid;place-items:center;font-size:13px}
+ol.phases li>div>b{display:block}
+/* árbol de decisión */
+.tree{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.q{font-weight:700;font-size:14px;margin:0 0 8px;display:flex;gap:8px;align-items:center}
+.q::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--node)}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.seg label{margin:0;font-weight:500;font-size:13.5px;border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer;background:var(--bg)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked+span{color:var(--accent);font-weight:700}
+.seg label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent)}
+.result{background:var(--node-soft);border:1px solid var(--node);border-radius:8px;padding:12px 14px;margin-top:4px}
+.result b{font-family:var(--f-display);font-size:18px}
+.chk{display:flex;gap:8px;align-items:center;font-weight:500;margin-top:10px}
+.size{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;align-items:start}
+.size>*{min-width:0}
+.gauge{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.gauge .nums{display:flex;gap:18px;align-items:baseline;font-variant-numeric:tabular-nums}
+.gauge .n{font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1}
+.gauge .lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.bar{position:relative;height:10px;border-radius:5px;background:var(--line);margin:14px 0 6px}
+.bar .rng{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:5px}
+.bar .mk{position:absolute;top:-4px;width:3px;height:18px;background:var(--warn);border-radius:2px}
+.msg{font-size:13.5px;padding:8px 10px;border-radius:6px;margin-top:8px}
+.msg.w{background:var(--warn-soft);color:var(--warn)}
+.msg.o{background:var(--alt);color:var(--ok)}
+/* proceso iterativo */
+.timeline{overflow-x:auto}
+.timeline svg{min-width:640px;width:100%;height:auto;display:block}
+.units{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.units label{display:flex;gap:8px;align-items:flex-start;font-weight:500;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:0;cursor:pointer}
+.units small{display:block;color:var(--muted);font-weight:400}
+.guide{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.guide h4{margin:14px 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.guide h4:first-child{margin-top:0}
+.guide ol{margin:0;padding-left:20px}
+.guide li{margin:3px 0}
+.obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.obs .box textarea{min-height:70px}
+footer{padding-block:28px;color:var(--muted);font-size:13px}
+footer ul{padding-left:18px;margin:6px 0 0}
+.credit{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:24px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.credit b{color:var(--ink);font-weight:600}
+.mono{font-family:var(--f-mono);font-size:12.5px}
+button:disabled{opacity:.45;cursor:not-allowed;filter:none}
+/* citas: paráfrasis de las fuentes del curso, una caja por sección */
+.cites{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:12px 16px 12px}
+.cites-h{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.cites ul{margin:0;padding-left:18px;display:grid;gap:7px}
+.cites li{font-size:13.5px;max-width:92ch}
+.cite{color:var(--muted)}
+/* opciones metodológicas */
+.met{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px;margin-top:14px}
+.met>*{min-width:0}
+.met fieldset{margin:0}
+.met legend{font-weight:600;font-size:13px;padding:0 4px}
+.met .mh{font-size:12.5px;color:var(--muted);margin:8px 0 0}
+.met .ck{display:flex;gap:8px;align-items:flex-start;font-weight:500;font-size:13.5px;margin:6px 0 0;cursor:pointer}
+.met .ck small{display:block;color:var(--muted);font-weight:400}
+.met .wide{grid-column:1/-1}
+.ckgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0 14px}
+/* propuesta generada: se lee como un capítulo de tesis */
+.doc{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:22px clamp(16px,3vw,30px);margin-top:14px;font-family:var(--f-display);font-size:15.5px;line-height:1.62}
+.doc h3{font-family:var(--f-display);font-size:18px;margin:22px 0 6px}
+.doc h3:first-child{margin-top:0}
+.doc h4{font-family:var(--f-display);font-size:20px;margin:0 0 4px}
+.doc p{margin:0 0 10px}
+.doc ol,.doc ul{margin:0 0 10px;padding-left:22px}
+.doc li{margin:3px 0}
+.doc .tbl{font-family:var(--f-body);margin:6px 0 12px}
+.doc .refs p{padding-left:2em;text-indent:-2em;font-size:14.5px}
+.alerts{display:grid;gap:6px;margin-top:12px}
+.alerts .msg{margin:0}
+/* ayudas de redacción bajo cada campo */
+.fb{font-size:12.5px;margin:5px 0 0;color:var(--muted)}
+.fb:empty{display:none}
+.fb.ok{color:var(--ok)}
+.fb.ok::before{content:"✓ "}
+.fb.w{color:var(--warn)}
+.fb.w::before{content:"! "}
+.fb.o::before{content:"• "}
+.help{margin-top:3px}
+.help summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:12.5px;width:max-content;max-width:100%}
+.help>div{background:var(--accent-soft);border-radius:6px;padding:8px 10px;margin-top:5px;font-size:12.5px;line-height:1.55}
+::placeholder{color:var(--muted);opacity:.8}
+/* checklist de cumplimiento */
+.ckhead{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:12px}
+.prog{flex:1 1 260px;min-width:0}
+.prog .bar{margin:0 0 6px}
+.prog .rng{left:0;transition:width .3s}
+#ckPct{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.ckgrid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-top:12px}
+.ckgrid2>*{min-width:0}
+.ckg h4{margin:0 0 10px;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.cklink{font-size:12px;font-weight:600;color:var(--accent);white-space:nowrap}
+.cklist{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.cklist li{display:grid;grid-template-columns:82px minmax(0,1fr);gap:10px;align-items:start;font-size:13.5px}
+.cklist li:has(label){grid-template-columns:minmax(0,1fr)}
+.cklist label.ck{display:flex;gap:8px;align-items:flex-start;margin:0;font-weight:500;cursor:pointer}
+.cklist small{display:block;color:var(--muted);font-weight:400;font-size:12.5px}
+.st{font-size:11px;font-weight:700;text-align:center;padding:3px 6px;border-radius:99px;white-space:nowrap}
+.s-ok{background:var(--alt);color:var(--ok)}
+.s-rev{background:var(--node-soft);color:var(--warn)}
+.s-pen{background:var(--warn-soft);color:var(--warn)}
+.s-na{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+/* diagramas archify insertados: el visor completo vive en diagramas/ y se muestra en un marco */
+.frame{position:relative;width:100%;height:clamp(500px,58vw,640px);border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--bg)}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+/* ruta del proceso animada: un foco recorre los pasos y el tramo previo fluye hacia él */
+.rail{--n:7;--d:1.8s;list-style:none;margin:0;padding:6px 0 2px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.rail li{position:relative;padding:0 4px;min-width:0}
+.rail li::before,.rail li::after{content:"";position:absolute;top:20px;left:-50%;width:100%;height:3px;border-radius:2px}
+.rail li::before{background:var(--line)}
+.rail li::after{background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);background-size:220% 100%;opacity:0;animation:railFlow calc(var(--n)*var(--d)) linear infinite;animation-delay:calc((var(--i) - 1)*var(--d))}
+.rail li:first-child::before,.rail li:first-child::after{display:none}
+.rail a{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;text-decoration:none;color:var(--ink);border-radius:8px;padding:0 2px 4px}
+.rail a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rn{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;font-size:14px;background:var(--surface);border:2px solid var(--line);color:var(--muted);animation:railLit calc(var(--n)*var(--d)) ease-in-out infinite;animation-delay:calc(var(--i)*var(--d))}
+.rail .loop .rn::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px dashed var(--node);animation:spin 5s linear infinite}
+.rt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.rail b{font-size:13px;line-height:1.25}
+.rail small{font-size:11.5px;color:var(--muted);line-height:1.3}
+.rail:hover .rn,.rail:hover li::after,.rail:hover .rn::after,.rail:focus-within .rn,.rail:focus-within li::after{animation-play-state:paused}
+@keyframes railLit{0%,15%,100%{background:var(--surface);border-color:var(--line);color:var(--muted);transform:none;box-shadow:none}
+  3%,11%{background:var(--accent);border-color:var(--accent);color:var(--surface);transform:scale(1.14);box-shadow:0 0 0 7px var(--accent-soft)}}
+@keyframes railFlow{0%{opacity:0;background-position:100% 0}2%{opacity:1}12%{opacity:1;background-position:-20% 0}14.3%,100%{opacity:0;background-position:-20% 0}}
+@keyframes railFlowV{0%{opacity:0;background-position:0 100%}2%{opacity:1}12%{opacity:1;background-position:0 -20%}14.3%,100%{opacity:0;background-position:0 -20%}}
+@keyframes spin{to{transform:rotate(1turn)}}
+@media (max-width:720px){
+  .rail{grid-template-columns:1fr;gap:6px}
+  .rail li{padding:0}
+  .rail li::before,.rail li::after{top:-50%;left:20px;width:3px;height:100%}
+  .rail li::after{background:linear-gradient(180deg,transparent 0%,var(--accent) 50%,transparent 100%);background-size:100% 220%;animation-name:railFlowV}
+  .rail a{flex-direction:row;text-align:left;gap:12px;align-items:center}
+  .rail a span:last-child{display:flex;flex-direction:column}
+  .rn{flex:0 0 42px}
+}
+/* figuras: se revelan una vez al entrar en pantalla, en el orden de lectura del proceso */
+@keyframes aIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes aFade{from{opacity:0}to{opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes dashFlow{to{stroke-dashoffset:-14}}
+@keyframes travel{0%{transform:translateX(0);opacity:0}6%{opacity:1}94%{opacity:1}100%{transform:translateX(680px);opacity:0}}
+@keyframes pulse{0%{transform:scale(1);opacity:.9}70%{transform:scale(2.6);opacity:0}100%{opacity:0}}
+@media (prefers-reduced-motion:no-preference){
+  .js-anim .anim:not(.in) .a,.js-anim .anim:not(.in) .a0{opacity:0}
+  .js-anim .anim:not(.in) .draw{stroke-dasharray:1;stroke-dashoffset:1}
+  .js-anim .anim.in:not(.done) .a{animation:aIn .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--t,0ms)}
+  .js-anim .anim.in:not(.done) .a0{animation:aFade .55s ease both;animation-delay:var(--t,0ms)}
+  .js-anim .anim.in:not(.done) .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s ease forwards;animation-delay:var(--t,0ms)}
+}
+.flowln{stroke-dasharray:8 6;animation:dashFlow 1.4s linear infinite}
+.sv .travel{fill:var(--surface);stroke:var(--ink);stroke-width:2;animation:travel 6s ease-in-out infinite}
+.sv .pulse{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:pulse 2.2s ease-out infinite}
+@media (prefers-reduced-motion:reduce){.rn{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}.sv .travel,.sv .pulse{display:none}}
+/* figuras: cada gráfico va en un marco numerado con pie, como en un informe APA; los SVG usan los mismos tokens de color que la página */
+figure.fig{margin:16px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px 12px;min-width:0}
+figure.fig .scroll{overflow-x:auto}
+figure.fig .scroll>svg{min-width:640px}
+figure.fig svg{display:block;width:100%;height:auto}
+figcaption{font-size:12.5px;color:var(--muted);margin-top:10px;max-width:86ch}
+figcaption b{color:var(--ink)}
+figcaption a{color:var(--accent);font-weight:600}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero>svg{display:block;width:100%;height:auto}
+@media (max-width:780px){.hero{grid-template-columns:1fr}.hero>svg{max-width:460px}}
+.sv text{font-family:var(--f-body);font-size:12px;fill:var(--ink)}
+.sv .s-mut{fill:var(--muted)}
+.sv .s-acc{fill:var(--accent)}
+.sv .s-wt{fill:var(--warn)}
+.sv .s-on{fill:var(--surface)}
+.sv .s-b{font-weight:700}
+.sv .s-mono{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em}
+.sv .s-disp{font-family:var(--f-display);font-weight:700}
+.sv .s-card{fill:var(--surface);stroke:var(--line)}
+.sv .s-bg{fill:var(--bg);stroke:var(--line)}
+.sv .s-soft{fill:var(--accent-soft)}
+.sv .s-fill{fill:var(--accent)}
+.sv .s-dot{fill:var(--muted);opacity:.45}
+.sv .s-ln{stroke:var(--line);fill:none}
+.sv .s-lnm{stroke:var(--muted);fill:none;stroke-width:1.2}
+.sv .s-ar{stroke:var(--accent);fill:none;stroke-width:1.6}
+.sv .s-warn{stroke:var(--warn);fill:none;stroke-width:2;stroke-dasharray:5 4}
+.sv .s-nd,.sv .s-obs{fill:var(--node-soft);stroke:var(--node)}
+.sv .s-int{fill:var(--accent-soft);stroke:var(--accent)}
+.sv .s-doc{fill:var(--alt);stroke:var(--ok)}
+.sv .s-row{fill:transparent}
+.sv .s-row.s-sel{fill:var(--node-soft);fill-opacity:.8}
+.sv .s-hit{cursor:pointer;outline:none}
+.sv .s-hit:hover .s-row:not(.s-sel){fill:var(--accent-soft);fill-opacity:.8}
+.sv .s-hit:hover>rect.s-card{stroke:var(--accent)}
+.sv .s-hit:focus-visible rect{stroke:var(--accent);stroke-width:2}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top"><div class="wrap">
+  <span class="brand">Diseño Metodológico Cualitativo</span>
+  <nav aria-label="Pasos">
+    <a href="#entrada">1 Entrada</a><a href="#metodologia">2 Metodología</a><a href="#matriz">3 Matriz</a><a href="#muestreo">4 Muestreo</a><a href="#recoleccion">5 Recolección</a><a href="#propuesta">6 Propuesta</a><a href="#checklist">7 Checklist</a><a href="#exportar">8 Exportar</a>
+  </nav>
+</div></header>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--accent)"/></marker>
+  <marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--muted)"/></marker>
+  <linearGradient id="gEst" x1="0" x2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--node)"/></linearGradient>
+</defs></svg>
+
+<main class="wrap">
+  <div class="intro hero">
+    <div>
+      <p class="eyebrow">Enfoque cualitativo · Hernández-Sampieri, Fernández y Baptista (2014), caps. 13–14</p>
+      <h1>Del problema de investigación al plan de muestreo y recolección</h1>
+      <p class="lead">Se ingresa el problema, los objetivos y las categorías del marco teórico. La página construye la matriz de categorización, determina el tipo de muestra con el árbol de decisión de Hernández-Sampieri et al. (2014), contrasta el tamaño previsto con rangos publicados, genera la guía de entrevista y la ficha de observación y redacta una propuesta metodológica ajustada a los parámetros ingresados. Cada sección cita las fuentes del curso. Se incluyen tres ejemplos: un estudio sobre tutoría universitaria, el componente cualitativo de la tesis doctoral de Lozano Martelo (2025) sobre competencias socioemocionales y convivencia escolar, y la tesis cuantitativa de Toscano Achote (2024) sobre aprendizaje basado en proyectos, cuyo planteamiento sirve para ensayar un diseño cualitativo alternativo.</p>
+    </div>
+    <svg class="sv" viewBox="0 0 440 240" role="img" aria-label="Ilustración: en una transcripción se resaltan fragmentos, cada fragmento recibe un código y los códigos se agrupan en categorías y en una macrocategoría">
+      <rect x="20" y="44" width="124" height="160" rx="7" class="s-bg" transform="rotate(-6 82 124)"/>
+      <rect x="28" y="36" width="124" height="160" rx="7" class="s-card"/>
+      <text x="40" y="55" class="s-mono s-mut" style="font-size:9px">E07 · ENTREVISTA</text>
+      <g class="s-ln" stroke-width="3" stroke-linecap="round">
+        <line x1="40" y1="72" x2="138" y2="72"/><line x1="40" y1="84" x2="130" y2="84"/><line x1="40" y1="96" x2="140" y2="96"/><line x1="40" y1="108" x2="122" y2="108"/><line x1="40" y1="120" x2="136" y2="120"/>
+        <line x1="40" y1="132" x2="128" y2="132"/><line x1="40" y1="144" x2="140" y2="144"/><line x1="40" y1="156" x2="116" y2="156"/><line x1="40" y1="168" x2="132" y2="168"/><line x1="40" y1="180" x2="104" y2="180"/>
+      </g>
+      <g stroke-width="9" stroke-linecap="round">
+        <line x1="40" y1="96" x2="140" y2="96" style="stroke:var(--node);opacity:.6"/>
+        <line x1="40" y1="132" x2="128" y2="132" style="stroke:var(--accent);opacity:.35"/>
+        <line x1="40" y1="168" x2="132" y2="168" style="stroke:var(--ok);opacity:.35"/>
+      </g>
+      <path d="M146 96C162 96 160 73 174 73" class="s-lnm" marker-end="url(#ahm)"/>
+      <path d="M134 132C156 132 154 123 174 123" class="s-lnm" marker-end="url(#ahm)"/>
+      <path d="M138 168C158 168 156 173 174 173" class="s-lnm" marker-end="url(#ahm)"/>
+      <rect x="176" y="60" width="82" height="26" rx="13" class="s-nd"/><text x="217" y="77" text-anchor="middle" class="s-mono">COD-01</text>
+      <rect x="176" y="110" width="82" height="26" rx="13" class="s-int"/><text x="217" y="127" text-anchor="middle" class="s-mono">COD-02</text>
+      <rect x="176" y="160" width="82" height="26" rx="13" class="s-doc"/><text x="217" y="177" text-anchor="middle" class="s-mono">COD-03</text>
+      <path d="M258 73C278 73 272 124 288 124" class="s-ar" marker-end="url(#ah)"/>
+      <path d="M258 123C272 123 274 124 288 124" class="s-ar" marker-end="url(#ah)"/>
+      <path d="M258 173C330 173 400 172 400 142" class="s-ar" marker-end="url(#ah)"/>
+      <rect x="292" y="110" width="64" height="28" rx="6" class="s-int"/><text x="324" y="128" text-anchor="middle" class="s-b">Cat. A</text>
+      <rect x="368" y="110" width="64" height="28" rx="6" class="s-int"/><text x="400" y="128" text-anchor="middle" class="s-b">Cat. B</text>
+      <path d="M324 110V72" class="s-ar" marker-end="url(#ah)"/><path d="M400 110V72" class="s-ar" marker-end="url(#ah)"/>
+      <rect x="292" y="34" width="140" height="34" rx="6" class="s-fill"/><text x="362" y="56" text-anchor="middle" class="s-on s-b">Macrocategoría</text>
+      <text x="90" y="226" text-anchor="middle" class="s-mono s-mut">FRAGMENTO</text>
+      <text x="217" y="226" text-anchor="middle" class="s-mono s-mut">CÓDIGO</text>
+      <text x="362" y="226" text-anchor="middle" class="s-mono s-mut">CATEGORÍA</text>
+    </svg>
+  </div>
+
+  <figure class="fig" aria-label="Animación de la ruta del proceso metodológico">
+    <ol class="rail">
+      <li style="--i:0"><a href="#entrada"><span class="rn">1</span><span class="rt"><b>Planteamiento</b><small>problema, pregunta y categorías</small></span></a></li>
+      <li style="--i:1"><a href="#metodologia"><span class="rn">2</span><span class="rt"><b>Metodología</b><small>paradigma y diseño</small></span></a></li>
+      <li style="--i:2"><a href="#matriz"><span class="rn">3</span><span class="rt"><b>Matriz</b><small>alineamiento categorial</small></span></a></li>
+      <li style="--i:3"><a href="#muestreo"><span class="rn">4</span><span class="rt"><b>Muestreo</b><small>muestra intencional</small></span></a></li>
+      <li style="--i:4" class="loop"><a href="#recoleccion"><span class="rn">5</span><span class="rt"><b>Recolección y análisis</b><small>simultáneos hasta saturar</small></span></a></li>
+      <li style="--i:5"><a href="#propuesta"><span class="rn">6</span><span class="rt"><b>Propuesta</b><small>capítulo de método</small></span></a></li>
+      <li style="--i:6"><a href="#checklist"><span class="rn">7</span><span class="rt"><b>Checklist</b><small>cumplimiento</small></span></a></li>
+    </ol>
+    <figcaption><b>Ruta del proceso.</b> Un foco recorre los pasos en orden; el círculo punteado del paso 5 indica que recolección y análisis giran juntos hasta la saturación. Pase el cursor para detener la animación y haga clic en un paso para ir a él.</figcaption>
+  </figure>
+
+  <!-- 1 ENTRADA -->
+  <section class="step" id="entrada">
+    <p class="eyebrow">Paso 1</p>
+    <h2>Problema de investigación y marco teórico</h2>
+    <p class="note">Formato del marco teórico: una categoría por línea, seguida de dos puntos y sus subcategorías separadas por punto y coma. Si este campo queda vacío, las categorías se derivan de los objetivos específicos.</p>
+    <div class="field" style="margin-top:14px"><label for="titulo">Título de la investigación</label><input id="titulo" type="text"></div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="field"><label for="ambito">Ámbito temático</label><input id="ambito" type="text"></div>
+      <div class="field"><label for="escenario">Escenario y participantes <span class="hint">(población)</span></label><input id="escenario" type="text"></div>
+    </div>
+    <div class="field" style="margin-top:14px"><label for="problema">Problema de investigación</label><textarea id="problema"></textarea></div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="field"><label for="pregunta">Pregunta general</label><textarea id="pregunta"></textarea></div>
+      <div class="field"><label for="objgen">Objetivo general</label><textarea id="objgen"></textarea></div>
+    </div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="field"><label for="objesp">Objetivos específicos <span class="hint">(uno por línea, en el mismo orden que las categorías)</span></label><textarea id="objesp" rows="5"></textarea></div>
+      <div class="field"><label for="marco">Marco teórico: categorías y subcategorías <span class="hint">(Categoría: sub1; sub2)</span></label><textarea id="marco" rows="5"></textarea></div>
+    </div>
+    <div class="actions">
+      <button id="btnGen" type="button">Generar diseño</button>
+      <button id="btnEj" class="ghost" type="button">Ejemplo: tutoría</button>
+      <button id="btnTesis" class="ghost" type="button">Ejemplo: tesis Lozano (2025)</button>
+      <button id="btnToscano" class="ghost" type="button">Ejemplo: tesis Toscano (2024)</button>
+      <button id="btnClr" class="ghost" type="button">Vaciar campos</button>
+      <span class="toast" id="t1" aria-live="polite"></span>
+    </div>
+    <aside class="cites" aria-label="Fundamentación del paso 1">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>La investigación cualitativa estudia los fenómenos en profundidad y de forma holística, con materiales narrativos ricos y un diseño flexible; no aplica tratamientos ni manipula o cuantifica variables predefinidas <span class="cite">(Moser y Korstjens, 2017, p. 271)</span>.</li>
+        <li>Las preguntas de investigación orientan la planificación de cualquier diseño cualitativo; por eso se formulan antes de decidir la muestra y las técnicas <span class="cite">(Flick, 2026, prefacio)</span>.</li>
+        <li>La posición ontológica y epistemológica, la metodología y los métodos de recolección y análisis deben ser internamente coherentes en sus supuestos <span class="cite">(Singh, 2015, p. 133)</span>.</li>
+        <li>Cuando el estudio parte de teoría previa, conviene formular preguntas de tipo deductivo en lugar de hipótesis, porque se ajustan mejor a los diseños cualitativos <span class="cite">(Robinson y Bailey-Rodriguez, 2026, p. 370)</span>.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 METODOLOGÍA -->
+  <section class="step" id="metodologia">
+    <p class="eyebrow">Paso 2</p>
+    <h2>Opciones de metodología de la investigación</h2>
+    <p class="note">Cada selector define un apartado del capítulo de metodología. «Sugerir opciones» las ajusta al problema, los objetivos y el marco teórico del paso 1; después se pueden cambiar una por una. El texto bajo cada selector resume la fuente que respalda la opción elegida.</p>
+    <div class="actions">
+      <button id="btnSug" type="button">Sugerir opciones según el paso 1</button>
+      <button id="btnProp1" class="ghost" type="button">Construir propuesta metodológica</button>
+      <span class="toast" id="t3" aria-live="polite"></span>
+    </div>
+    <div class="msg o" id="sugMsg" hidden></div>
+    <div class="met" id="met"></div>
+    <figure class="fig">
+      <div class="frame"><iframe src="diagramas/proceso-investigacion.html" title="Diagrama interactivo: ruta del diseño metodológico cualitativo" loading="lazy"></iframe></div>
+      <figcaption><b>Diagrama A.</b> Ruta del diseño metodológico, generada con archify. El botón «Live» del visor anima el recorrido entre pasos; también permite acercar, buscar y exportar en PNG, SVG o video. <a href="diagramas/proceso-investigacion.html" target="_blank" rel="noopener">Abrir en pantalla completa</a>.</figcaption>
+    </figure>
+    <aside class="cites" aria-label="Fundamentación del paso 2">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>La ciencia se caracteriza como conocimiento racional, sistemático, exacto, verificable y, por lo mismo, falible <span class="cite">(Bunge, s. f., «¿Qué es la ciencia?», párr. 1)</span>.</li>
+        <li>Los enfoques cuantitativo y cualitativo comparten etapas genéricas del proceso de investigación, pero responden a paradigmas con rasgos propios que pueden llegar a combinarse <span class="cite">(Vega-Malagón et al., 2014, p. 523)</span>.</li>
+        <li>El paradigma constructivista o naturalista surgió como contrapeso al positivismo, que supone una realidad ordenada propia de la investigación cuantitativa <span class="cite">(Moser y Korstjens, 2017, p. 271)</span>.</li>
+        <li>El campo cualitativo se ha diversificado e incorpora formas de indagar propias de cada contexto, incluidas epistemologías indígenas <span class="cite">(Okoko et al., 2023, p. 1)</span>; aunque pueda parecer opuesto a las tradiciones pospositivistas y pragmatistas, su adopción abre posibilidades nuevas <span class="cite">(Wolgemuth et al., 2026, p. 387)</span>.</li>
+        <li>Combinar teorías posestructurales con métodos sistemáticos, como entrevistas, etnografía o codificación, puede ser tan productivo como la indagación sin método <span class="cite">(Tobin, 2025, p. 559)</span>.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 MATRIZ -->
+  <section class="step" id="matriz">
+    <p class="eyebrow">Paso 3</p>
+    <h2>Matriz de categorización apriorística</h2>
+    <p class="note">Cada objetivo específico se asocia con una categoría. La técnica se asigna por regla: subcategorías con términos de acción o interacción (interacción, práctica, conducta, actividad, acción, participación) → observación; términos documentales (documento, registro, plan, sílabo, norma, informe) → análisis documental; el resto → entrevista semiestructurada. La asignación es editable en el informe exportado.</p>
+    <div class="tbl" style="margin-top:12px"><table id="tblHead"></table></div>
+    <div class="tbl" style="margin-top:14px"><table id="tblMat"></table></div>
+    <figure class="fig"><div class="scroll"><svg class="sv" id="arbol" viewBox="0 0 760 200" role="img" aria-label="Árbol categorial generado desde el marco teórico: ámbito, categorías con su técnica y subcategorías"></svg></div>
+      <figcaption><b>Figura 1.</b> Árbol categorial generado a partir del marco teórico del paso 1: ámbito temático, categorías apriorísticas y subcategorías. El color y la etiqueta de cada categoría indican la técnica asignada por regla; se actualiza con «Generar diseño».</figcaption></figure>
+
+    <h3>Alineamiento categorial: la matriz de tres columnas</h3>
+    <p class="note">En la inducción analítica, la matriz transforma los datos empíricos brutos en una estructura categorial. Cada fila conserva la trazabilidad entre el código, el aserto que lo explica y el fragmento que lo sustenta.</p>
+    <figure class="fig" data-dir="rtl"><div class="scroll">
+      <svg class="sv" viewBox="0 0 760 250" role="img" aria-label="Matriz de tres columnas: código o denominación, aserto interpretativo y fragmento empírico, con un ejemplo del caso de tutoría y la dirección inductiva del fragmento al código">
+        <rect x="20" y="16" width="220" height="176" rx="8" class="s-card"/><rect x="270" y="16" width="220" height="176" rx="8" class="s-card"/><rect x="520" y="16" width="220" height="176" rx="8" class="s-card"/>
+        <g class="s-soft"><rect x="20" y="16" width="220" height="34" rx="8"/><rect x="20" y="36" width="220" height="14"/><rect x="270" y="16" width="220" height="34" rx="8"/><rect x="270" y="36" width="220" height="14"/><rect x="520" y="16" width="220" height="34" rx="8"/><rect x="520" y="36" width="220" height="14"/></g>
+        <g fill="none" class="s-ln"><rect x="20" y="16" width="220" height="176" rx="8"/><rect x="270" y="16" width="220" height="176" rx="8"/><rect x="520" y="16" width="220" height="176" rx="8"/></g>
+        <text x="34" y="38" class="s-b">1 · Código o denominación</text><text x="284" y="38" class="s-b">2 · Aserto interpretativo</text><text x="534" y="38" class="s-b">3 · Fragmento empírico</text>
+        <text x="34" y="88" class="s-disp s-acc" style="font-size:21px">Confianza</text><text x="34" y="112" class="s-disp s-acc" style="font-size:21px">tutorial</text>
+        <text x="284" y="80" style="font-size:12.5px">Los estudiantes acuden a la</text><text x="284" y="98" style="font-size:12.5px">tutoría cuando perciben</text><text x="284" y="116" style="font-size:12.5px">escucha sin juicio del tutor.</text>
+        <text x="534" y="80" font-style="italic" style="font-size:12.5px">«Voy cuando sé que el profe</text><text x="534" y="98" font-style="italic" style="font-size:12.5px">me va a escuchar y no a</text><text x="534" y="116" font-style="italic" style="font-size:12.5px">regañarme.»</text>
+        <text x="534" y="138" class="s-mono s-mut">E07 · L. 41–43</text>
+        <g class="s-mut" style="font-size:11px"><text x="34" y="162" class="s-mut">Etiqueta de primer nivel,</text><text x="34" y="177" class="s-mut">simbólica; no más de 3 palabras</text>
+        <text x="284" y="162" class="s-mut">Palabras del investigador;</text><text x="284" y="177" class="s-mut">regla de agrupación anclada</text>
+        <text x="534" y="162" class="s-mut">Cita textual del campo, en el</text><text x="534" y="177" class="s-mut">lenguaje bruto del participante</text></g>
+        <line x1="266" y1="104" x2="246" y2="104" class="s-ar" marker-end="url(#ah)"/><line x1="516" y1="104" x2="496" y2="104" class="s-ar" marker-end="url(#ah)"/>
+        <line x1="730" y1="212" x2="30" y2="212" class="s-ar" marker-end="url(#ah)"/>
+        <text x="380" y="236" text-anchor="middle" class="s-mut">Dirección inductiva del análisis: del fragmento empírico al código</text>
+      </svg></div>
+      <figcaption><b>Figura 2.</b> Estructura de la matriz de categorización con un ejemplo ilustrativo del caso de tutoría (el fragmento es ficticio). El código remite siempre a la evidencia que lo originó.</figcaption></figure>
+
+    <h3>Procedimiento de construcción y niveles de agrupamiento</h3>
+    <figure class="fig"><div class="scroll">
+      <svg class="sv" viewBox="0 0 760 290" role="img" aria-label="Cinco pasos: segmentación, primer agrupamiento, codificación inicial, redacción del aserto y agrupamiento de segundo y tercer nivel; debajo, la reducción de unidades de análisis a códigos, subcategorías, macrocategorías y modelo de relaciones">
+        <g>
+          <rect x="22" y="14" width="132" height="108" rx="8" class="s-card"/><rect x="168" y="14" width="132" height="108" rx="8" class="s-card"/><rect x="314" y="14" width="132" height="108" rx="8" class="s-card"/><rect x="460" y="14" width="132" height="108" rx="8" class="s-card"/><rect x="606" y="14" width="132" height="108" rx="8" class="s-int"/>
+          <g class="s-fill"><circle cx="40" cy="34" r="11"/><circle cx="186" cy="34" r="11"/><circle cx="332" cy="34" r="11"/><circle cx="478" cy="34" r="11"/><circle cx="624" cy="34" r="11"/></g>
+          <g class="s-on s-b" text-anchor="middle"><text x="40" y="38" class="s-on s-b">1</text><text x="186" y="38" class="s-on s-b">2</text><text x="332" y="38" class="s-on s-b">3</text><text x="478" y="38" class="s-on s-b">4</text><text x="624" y="38" class="s-on s-b">5</text></g>
+          <text x="34" y="64" class="s-b">Segmentación</text>
+          <text x="180" y="64" class="s-b">Primer</text><text x="180" y="78" class="s-b">agrupamiento</text>
+          <text x="326" y="64" class="s-b">Codificación</text><text x="326" y="78" class="s-b">inicial</text>
+          <text x="472" y="64" class="s-b">Redacción</text><text x="472" y="78" class="s-b">del aserto</text>
+          <text x="618" y="64" class="s-b">Agrupamiento</text><text x="618" y="78" class="s-b">2.º y 3.er nivel</text>
+          <g style="font-size:11px">
+            <text x="34" y="98" class="s-mut">Unidades temáticas</text><text x="34" y="112" class="s-mut">o situacionales</text>
+            <text x="180" y="98" class="s-mut">Mismo significado</text><text x="180" y="112" class="s-mut">empírico</text>
+            <text x="326" y="98" class="s-mut">Código y memo de</text><text x="326" y="112" class="s-mut">la regla</text>
+            <text x="472" y="98" class="s-mut">Síntesis anclada</text><text x="472" y="112" class="s-mut">en la evidencia</text>
+            <text x="618" y="98" class="s-mut">Subcategorías y</text><text x="618" y="112" class="s-mut">macrocategorías</text>
+          </g>
+          <g class="s-ar"><line x1="155" y1="68" x2="166" y2="68" marker-end="url(#ah)"/><line x1="301" y1="68" x2="312" y2="68" marker-end="url(#ah)"/><line x1="447" y1="68" x2="458" y2="68" marker-end="url(#ah)"/><line x1="593" y1="68" x2="604" y2="68" marker-end="url(#ah)"/></g>
+        </g>
+        <text x="22" y="152" class="s-mono s-mut">NIVELES DE AGRUPAMIENTO · REDUCCIÓN DE LOS DATOS</text>
+        <g transform="translate(8 0)">
+          <g class="s-soft" style="opacity:.75">
+            <polygon points="106,172 196,180 196,232 106,240"/><polygon points="256,180 336,186 336,232 256,232"/><polygon points="408,186 475,190 475,232 408,232"/><polygon points="561,190 627,198 627,224 561,232"/>
+          </g>
+          <g class="s-dot" style="opacity:.7">
+            <circle cx="62" cy="182" r="5"/><circle cx="80" cy="182" r="5"/><circle cx="98" cy="182" r="5"/><circle cx="62" cy="200" r="5"/><circle cx="80" cy="200" r="5"/><circle cx="98" cy="200" r="5"/>
+            <circle cx="62" cy="218" r="5"/><circle cx="80" cy="218" r="5"/><circle cx="98" cy="218" r="5"/><circle cx="62" cy="236" r="5"/><circle cx="80" cy="236" r="5"/><circle cx="98" cy="236" r="5"/>
+          </g>
+          <g class="s-nd"><rect x="200" y="184" width="24" height="12" rx="3"/><rect x="228" y="184" width="24" height="12" rx="3"/><rect x="200" y="202" width="24" height="12" rx="3"/><rect x="228" y="202" width="24" height="12" rx="3"/><rect x="200" y="220" width="24" height="12" rx="3"/><rect x="228" y="220" width="24" height="12" rx="3"/></g>
+          <g class="s-int"><rect x="340" y="188" width="64" height="12" rx="3"/><rect x="340" y="203" width="64" height="12" rx="3"/><rect x="340" y="218" width="64" height="12" rx="3"/></g>
+          <g class="s-fill"><rect x="479" y="192" width="78" height="16" rx="4"/><rect x="479" y="214" width="78" height="16" rx="4"/></g>
+          <line x1="642" y1="211" x2="690" y2="211" class="s-ar" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <circle cx="642" cy="211" r="11" class="s-fill"/><circle cx="690" cy="211" r="11" class="s-fill"/>
+          <text x="642" y="215" text-anchor="middle" class="s-on s-b" style="font-size:11px">A</text><text x="690" y="215" text-anchor="middle" class="s-on s-b" style="font-size:11px">B</text>
+          <g text-anchor="middle" style="font-size:11.5px">
+            <text x="80" y="262" class="s-b">Unidades de análisis</text><text x="226" y="262" class="s-b">Códigos · 1.er nivel</text><text x="372" y="262" class="s-b">Subcategorías · 2.º</text><text x="518" y="262" class="s-b">Macrocategorías · 3.º</text><text x="666" y="262" class="s-b">Modelo final</text>
+          </g>
+          <g text-anchor="middle" style="font-size:11px">
+            <text x="80" y="278" class="s-mut">segmentos del corpus</text><text x="226" y="278" class="s-mut">grupos codificados</text><text x="372" y="278" class="s-mut">segundo agrupamiento</text><text x="518" y="278" class="s-mut">tercer agrupamiento</text><text x="666" y="278" class="s-mut">relaciones intercategoriales</text>
+          </g>
+        </g>
+      </svg></div>
+      <figcaption><b>Figura 3.</b> Procedimiento de construcción de la matriz (pasos 1–5) y reducción progresiva de los datos por niveles de agrupamiento. Las cantidades son ilustrativas.</figcaption></figure>
+    <figure class="fig">
+      <div class="frame"><iframe src="diagramas/procedimiento-matriz.html" title="Diagrama interactivo: matriz de categorización del corpus al modelo intercategorial" loading="lazy"></iframe></div>
+      <figcaption><b>Diagrama B.</b> Construcción de la matriz de categorización: cada paso del análisis alimenta una columna de la matriz (fragmento, código y aserto) hasta el modelo final. Active «Live» para ver el recorrido animado. <a href="diagramas/procedimiento-matriz.html" target="_blank" rel="noopener">Abrir en pantalla completa</a>.</figcaption>
+    </figure>
+    <aside class="cites" aria-label="Fundamentación del paso 3">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>Los códigos permiten prestar atención y nombrar con coherencia cada fragmento; usada de forma intencional y estratégica, la codificación es una manera de conocer y dar sentido a grandes volúmenes de datos <span class="cite">(Mihas, 2023, p. 303)</span>.</li>
+        <li>Un libro de códigos inicial puede derivarse de las preguntas de investigación, la guía de entrevista y los objetivos (codificación deductiva); la codificación inductiva, en cambio, nombra los temas que surgen en la lectura atenta, como el código in vivo que usa las palabras del participante <span class="cite">(Mihas, 2023, pp. 303–304)</span>.</li>
+        <li>Los memos reflexivos desarrollan lo que el lenguaje del participante enseña sobre su perspectiva, y su contenido puede convertirse en códigos <span class="cite">(Mihas, 2023, p. 304)</span>.</li>
+        <li>La codificación inicial es el primer contacto analítico con los datos y el enlace entre su recolección y su análisis <span class="cite">(Flick, 2026, glosario)</span>.</li>
+      </ul>
+    </aside>
+
+    <h3>Matriz de codificación (fase de análisis)</h3>
+    <p class="note">Plantilla para la reducción de datos tras la recolección: el código se asigna al segmento, el aserto lo redacta el investigador y el fragmento se transcribe literalmente.</p>
+    <div class="tbl" style="margin-top:8px"><table id="tblCod"></table></div>
+  </section>
+
+  <!-- 3 MUESTREO -->
+  <section class="step" id="muestreo">
+    <p class="eyebrow">Paso 4</p>
+    <h2>Muestreo</h2>
+
+    <h3>Muestreo probabilístico y no probabilístico</h3>
+    <div class="compare">
+      <div class="box prob"><h4>Probabilístico</h4>
+        <ul><li>Cumple los principios de probabilidad: cada elemento de la población tiene una probabilidad conocida y distinta de cero de ser elegido.</li>
+        <li>Mayor rigor para la generalización estadística.</li>
+        <li>Requiere marco muestral completo, más tiempo y más recursos.</li>
+        <li>Uso habitual: enfoque cuantitativo.</li></ul></div>
+      <div class="box noprob"><h4>No probabilístico (dirigido)</h4>
+        <ul><li>La selección sigue criterios del investigador vinculados al planteamiento.</li>
+        <li>Los resultados no se generalizan estadísticamente y pueden estar sesgados.</li>
+        <li>Más rápido, más económico y menos complejo.</li>
+        <li>Uso habitual: enfoque cualitativo; la representatividad buscada es conceptual.</li></ul></div>
+    </div>
+    <figure class="fig"><div class="scroll"><svg class="sv" id="figProb" viewBox="0 0 760 232" role="img" aria-label="Comparación visual: a la izquierda, selección al azar dentro de un marco muestral completo; a la derecha, selección dirigida de los casos que cumplen el criterio del estudio"></svg></div>
+      <figcaption><b>Figura 4.</b> Lógica de selección en cada tipo de muestreo. En el probabilístico, el azar opera sobre un marco muestral completo; en el dirigido, el investigador elige los casos que aportan al planteamiento.</figcaption></figure>
+    <aside class="cites" aria-label="Fundamentación del muestreo">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>En el muestreo intencional los participantes no se eligen mediante un procedimiento formal aleatorio, sino directamente por sus características específicas <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>En la teoría fundamentada, el muestreo teórico incorpora casos, grupos o materiales según su relevancia para la teoría en construcción; la saturación teórica llega cuando más datos sobre una categoría ya no producen nuevas ideas teóricas <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>Los casos se localizan de forma intencional por su significado social o informativo y no por representatividad estadística; un caso desviado o único puede poner a prueba la teoría existente <span class="cite">(Robinson y Bailey-Rodriguez, 2026, p. 374)</span>.</li>
+      </ul>
+    </aside>
+
+    <h3>Decisiones sobre la muestra inicial</h3>
+    <ol class="phases">
+      <li><div><b>Definir las unidades de análisis o casos iniciales</b><span id="ph1"></span></div></li>
+      <li><div><b>Elegir la muestra inicial</b>Primer contacto exploratorio con el campo: vagabundeo, informantes clave o bola de nieve.<span id="ph2"></span></div></li>
+      <li><div><b>Revisar las unidades de análisis iniciales y, en su caso, redefinirlas</b>Después de las primeras entrevistas u observaciones se evalúa si los casos responden al planteamiento. La muestra se confirma, se amplía o se sustituye in situ con criterios de representatividad conceptual (figura 5).</div></li>
+      <li><div><b>Alcanzar el punto de saturación teórica</b>El investigador se retira del campo cuando la nueva información se vuelve redundante y ya no modifica ni genera categorías (figura 6).</div></li>
+    </ol>
+    <figure class="fig" data-dir="ttb"><div class="scroll"><svg class="sv" id="figCrit" viewBox="0 0 760 212" role="img" aria-label="Criterios de representatividad conceptual sobre el continuo de una categoría: casos típicos al centro, extremos en los polos, variación máxima a lo largo del continuo y muestreo teórico para contrastar supuestos"></svg></div>
+      <figcaption><b>Figura 5.</b> Criterios de representatividad conceptual sobre el continuo de una categoría. Los puntos grandes son los casos que cada criterio incorpora a la muestra.</figcaption></figure>
+    <figure class="fig">
+      <div class="frame"><iframe src="diagramas/ciclo-muestreo.html" title="Diagrama interactivo: ciclo del muestreo cualitativo hasta la saturación" loading="lazy"></iframe></div>
+      <figcaption><b>Diagrama C.</b> Ciclo del muestreo: mientras el análisis siga aportando categorías, la muestra se ajusta y vuelve a la recolección; cuando los datos se vuelven redundantes, se cierra el campo. Active «Live» para animar el ciclo. <a href="diagramas/ciclo-muestreo.html" target="_blank" rel="noopener">Abrir en pantalla completa</a>.</figcaption>
+    </figure>
+    <figure class="fig"><div class="scroll"><svg class="sv" id="figSat" viewBox="0 0 760 252" role="img" aria-label="Curva de saturación ilustrativa: códigos nuevos por entrevista y códigos acumulados, con el punto de saturación y el tamaño previsto"></svg></div>
+      <figcaption><b>Figura 6.</b> Curva de saturación ilustrativa: modelo exponencial calibrado con Guest et al. (2006), donde cerca del 92 % de los códigos apareció en las primeras 12 entrevistas de una población homogénea. Las barras muestran el aporte de cada entrevista; la línea, los códigos acumulados; la marca naranja sigue el tamaño previsto. La saturación real se documenta en el propio estudio.</figcaption></figure>
+
+    <h3>Árbol de decisión del tipo de muestra</h3>
+    <div class="tree">
+      <p class="q">¿Cuándo ocurre el muestreo inicial?</p>
+      <div class="seg" role="radiogroup" aria-label="Momento del muestreo">
+        <label><input type="radio" name="mom" value="antes" id="momA" checked><span>Antes de la recolección de los datos</span></label>
+        <label><input type="radio" name="mom" value="despues" id="momD"><span>Después de la recolección de los datos</span></label>
+      </div>
+      <p class="q">¿Cuál es la intención?</p>
+      <div class="seg" id="intents" role="radiogroup" aria-label="Intención"></div>
+      <label class="chk"><input type="checkbox" id="dificil"> Es difícil obtener casos</label>
+      <div class="result" id="resMuestra" aria-live="polite"></div>
+    </div>
+
+    <h3>Tamaño mínimo y máximo sugerido</h3>
+    <p class="note">En el enfoque cualitativo el tamaño final lo fija la saturación de categorías. Los rangos siguientes son orientativos. Se citan las ediciones que usa el curso: Creswell y Creswell (2023), Creswell y Guetterman (2025), Creswell y Poth (2024), Hernández-Sampieri y Mendoza (2018) y Barraza (2023). Los rangos coinciden con los de ediciones anteriores (Creswell, 2013; Hernández-Sampieri et al., 2014); salvo en Barraza, conviene confirmar la página en la edición consultada. El capítulo de Morse (1994) no tiene edición posterior; su planteamiento actualizado aparece en Morse (2000).</p>
+    <div class="size" style="margin-top:10px">
+      <div class="field">
+        <label for="diseno">Diseño de investigación</label>
+        <select id="diseno"></select>
+        <label for="nPrev" style="margin-top:12px">Tamaño previsto <span class="hint">(casos o participantes)</span></label>
+        <input id="nPrev" type="number" min="1" step="1">
+      </div>
+      <div class="gauge" id="gauge"></div>
+    </div>
+    <figure class="fig" data-dir="ttb"><div class="scroll"><svg class="sv" id="figSize" viewBox="0 0 760 310" role="img" aria-label="Rangos de tamaño de muestra por tradición cualitativa en escala logarítmica, con el diseño elegido resaltado y el tamaño previsto"></svg></div>
+      <figcaption><b>Figura 7.</b> Tamaño mínimo y máximo por tradición (escala logarítmica). Barra oscura: rango de la tabla; banda clara: rango ampliado (fenomenología: 5–25 según Polkinghorne, y teoría fundamentada: hasta 60, ambos en Creswell y Poth, 2024; grupos de enfoque: 6–12 según Barraza, 2023, p. 56). Haga clic en una fila para elegir el diseño.</figcaption></figure>
+    <div class="tbl" style="margin-top:14px"><table id="tblSizes"></table></div>
+    <aside class="cites" aria-label="Fundamentación del tamaño de muestra">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>En pruebas empíricas, la saturación se alcanzó entre 9 y 17 entrevistas y entre 4 y 8 grupos focales, en poblaciones relativamente homogéneas y con objetivos acotados <span class="cite">(Hennink y Kaiser, 2022)</span>.</li>
+        <li>El poder de información justifica el tamaño con cinco rasgos del estudio: amplitud del objetivo, especificidad de la muestra, uso de teoría, calidad del diálogo y estrategia de análisis <span class="cite">(Malterud et al., 2016)</span>.</li>
+        <li>La saturación resulta incoherente con el análisis temático reflexivo; en ese caso, el tamaño es un juicio situado sobre la riqueza de los datos <span class="cite">(Braun y Clarke, 2021)</span>.</li>
+        <li>Cuantos más datos útiles aporta cada participante, menos participantes se necesitan; el tamaño depende del alcance del estudio, la naturaleza del tema, la calidad de los datos y el diseño <span class="cite">(Morse, 2000)</span>.</li>
+        <li>Con un umbral de 5 % de información nueva, la saturación temática llegó hacia la sexta o séptima entrevista en muestras homogéneas <span class="cite">(Guest et al., 2020)</span>.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 4 RECOLECCIÓN -->
+  <section class="step" id="recoleccion">
+    <p class="eyebrow">Paso 5</p>
+    <h2>Recolección de datos cualitativos</h2>
+
+    <h3>Proceso iterativo: recolección y análisis simultáneos</h3>
+    <div class="timeline box">
+      <svg viewBox="0 0 720 190" role="img" aria-label="Entrevistas 1 a k, recolección y análisis en paralelo, evaluación de la muestra inicial y análisis final">
+        <g font-family="Public Sans, sans-serif" font-size="12">
+          <line x1="10" y1="70" x2="700" y2="70" stroke="var(--accent)" stroke-width="2" class="flowln"/><polygon points="700,65 712,70 700,75" fill="var(--accent)"/>
+          <line x1="10" y1="140" x2="700" y2="140" stroke="var(--accent)" stroke-width="2" class="flowln"/><polygon points="700,135 712,140 700,145" fill="var(--accent)"/>
+          <g fill="var(--alt)" stroke="var(--line)">
+            <rect x="30" y="16" width="100" height="30" rx="5"/><rect x="180" y="16" width="100" height="30" rx="5"/><rect x="330" y="16" width="100" height="30" rx="5"/><rect x="480" y="16" width="100" height="30" rx="5"/>
+          </g>
+          <g stroke="var(--muted)"><line x1="80" y1="46" x2="80" y2="70"/><line x1="230" y1="46" x2="230" y2="70"/><line x1="380" y1="46" x2="380" y2="70"/><line x1="530" y1="46" x2="530" y2="70"/><line x1="530" y1="70" x2="530" y2="140"/><line x1="630" y1="140" x2="630" y2="160"/></g>
+          <g fill="var(--ink)" text-anchor="middle"><text x="80" y="35">Entrevista 1</text><text x="230" y="35">Entrevista 2</text><text x="380" y="35">Entrevista 3</text><text x="530" y="35">Entrevista k</text></g>
+          <text x="14" y="62" fill="var(--muted)">Recolección de los datos</text>
+          <text x="14" y="132" fill="var(--muted)">Análisis de los datos</text>
+          <rect x="440" y="88" width="180" height="34" rx="5" fill="var(--node-soft)" stroke="var(--node)"/>
+          <text x="530" y="102" text-anchor="middle" fill="var(--ink)">Evaluación de la muestra</text><text x="530" y="116" text-anchor="middle" fill="var(--ink)">inicial: confirmación o ajustes</text>
+          <rect x="580" y="160" width="100" height="26" rx="5" fill="var(--accent-soft)" stroke="var(--line)"/>
+          <text x="630" y="177" text-anchor="middle" fill="var(--ink)" font-weight="600">Análisis final</text>
+        </g>
+      </svg>
+    </div>
+
+    <h3>Unidades de análisis además de personas o casos</h3>
+    <p class="note">Clasificación de Lofland et al. retomada por Hernández-Sampieri et al. (2014). Las unidades marcadas se incluyen en el informe exportado.</p>
+    <div class="units" id="units" style="margin-top:8px"></div>
+    <figure class="fig" data-dir="ttb"><div class="scroll"><svg class="sv" id="figUnits" viewBox="0 0 760 340" role="group" aria-label="Mapa de unidades de análisis alrededor de personas o casos; cada nodo activa o desactiva la unidad"></svg></div>
+      <figcaption><b>Figura 8.</b> Unidades de análisis además de personas o casos. Las unidades activas (enlace continuo) se incluyen en el informe; haga clic en un nodo o en su casilla para cambiarla.</figcaption></figure>
+
+    <h3>Técnicas según su grado de estructuración previa</h3>
+    <figure class="fig"><div class="scroll">
+      <svg class="sv" viewBox="0 0 760 236" role="img" aria-label="Espectro de estructuración: entrevista estructurada, semiestructurada y no estructurada sobre la barra; análisis documental, grupo focal y observación participante no estructurada debajo">
+        <text x="40" y="22" class="s-mono s-mut">ENTREVISTA</text>
+        <rect x="50" y="32" width="144" height="42" rx="7" class="s-int"/><text x="122" y="50" text-anchor="middle" class="s-b">Estructurada</text><text x="122" y="66" text-anchor="middle" class="s-mut" style="font-size:11px">guion fijo y cerrado</text>
+        <rect x="262" y="32" width="168" height="42" rx="7" class="s-int"/><text x="346" y="50" text-anchor="middle" class="s-b">Semiestructurada</text><text x="346" y="66" text-anchor="middle" class="s-mut" style="font-size:11px">guía flexible a priori</text>
+        <rect x="538" y="32" width="160" height="42" rx="7" class="s-int"/><text x="618" y="50" text-anchor="middle" class="s-b">No estructurada</text><text x="618" y="66" text-anchor="middle" class="s-mut" style="font-size:11px">en profundidad, abierta</text>
+        <g class="s-lnm"><line x1="122" y1="74" x2="122" y2="104"/><line x1="346" y1="74" x2="346" y2="104"/><line x1="618" y1="74" x2="618" y2="104"/><line x1="264" y1="120" x2="264" y2="150"/><line x1="428" y1="120" x2="428" y2="150"/><line x1="638" y1="120" x2="638" y2="150"/></g>
+        <rect x="40" y="104" width="680" height="16" rx="8" style="fill:url(#gEst)"/>
+        <circle cx="40" cy="112" r="4" class="travel"/>
+        <g class="s-card" style="stroke:var(--ink);stroke-width:2"><circle cx="122" cy="112" r="6"/><circle cx="346" cy="112" r="6"/><circle cx="618" cy="112" r="6"/>
+          <rect x="259" y="107" width="10" height="10" transform="rotate(45 264 112)"/><rect x="423" y="107" width="10" height="10" transform="rotate(45 428 112)"/><rect x="633" y="107" width="10" height="10" transform="rotate(45 638 112)"/></g>
+        <text x="40" y="174" class="s-mono s-mut">OTRAS</text><text x="40" y="188" class="s-mono s-mut">TÉCNICAS</text>
+        <rect x="186" y="150" width="156" height="42" rx="7" class="s-nd"/><text x="264" y="168" text-anchor="middle" class="s-b">Análisis documental</text><text x="264" y="184" text-anchor="middle" class="s-mut" style="font-size:11px">ficha de análisis</text>
+        <rect x="356" y="150" width="144" height="42" rx="7" class="s-nd"/><text x="428" y="168" text-anchor="middle" class="s-b">Grupo focal</text><text x="428" y="184" text-anchor="middle" class="s-mut" style="font-size:11px">discusión por categorías</text>
+        <rect x="546" y="150" width="184" height="42" rx="7" class="s-nd"/><text x="638" y="168" text-anchor="middle" class="s-b">Observación participante</text><text x="638" y="184" text-anchor="middle" class="s-mut" style="font-size:11px">no estructurada · diario de campo</text>
+        <text x="40" y="224" class="s-mut">← Mayor estructuración previa</text><text x="720" y="224" text-anchor="end" class="s-mut">Mayor apertura y flexibilidad →</text>
+      </svg></div>
+      <figcaption><b>Figura 9.</b> Técnicas de recolección ordenadas por su grado de estructuración previa (posición aproximada). La semiestructurada parte de la estructura categorial a priori; la no estructurada y la observación participante dejan emerger la perspectiva del participante.</figcaption></figure>
+
+    <h3>1. La entrevista</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Estructurada</th><th>Semiestructurada</th><th>No estructurada</th></tr></thead>
+      <tbody><tr>
+        <td>Guía fija de preguntas en orden predeterminado. Permite comparar respuestas entre participantes, reduce el sesgo del entrevistador y es más breve.</td>
+        <td>Guía de temas y preguntas con libertad para introducir preguntas adicionales y alterar el orden según el flujo de la conversación.</td>
+        <td>Guía general de contenido; el entrevistador improvisa preguntas, sigue los cambios de tema y profundiza en la discusión.</td>
+      </tr></tbody></table></div>
+    <aside class="cites" aria-label="Fundamentación de la recolección">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>La entrevista semiestructurada usa preguntas formuladas de antemano que pueden plantearse en orden variable y reformularse, para que el entrevistado despliegue su punto de vista <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>La guía actúa como hilo conductor de la recolección: enmarca y focaliza los temas, enumera los asuntos que deben tratarse, mejora la comparabilidad de los datos y estructura la comunicación; admite distintos grados de estructuración <span class="cite">(Misoch, 2019, p. 66)</span>.</li>
+        <li>En la entrevista grupal, la guía organiza toda la sesión con pocos bloques temáticos, para que no se prolongue en exceso <span class="cite">(Misoch, 2019, p. 164)</span>.</li>
+        <li>Las ciencias sociales y las humanidades combinan entrevistas, observación participante, grupos focales, historia oral e investigación de archivo para examinar tanto las condiciones estructurales como la experiencia vivida <span class="cite">(Bhangu et al., 2023, p. 39)</span>.</li>
+        <li>En la etnografía, los memos permiten examinar los espacios culturales como totalidades y la codificación identifica sus componentes, como las creencias <span class="cite">(Mihas, 2023, p. 307)</span>.</li>
+      </ul>
+    </aside>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="guide" id="guia"></div>
+      <div class="guide">
+        <h4>Diseño de la guía</h4>
+        <ol><li>Preguntas de apertura sencillas y no intrusivas.</li><li>Preguntas centrales alineadas con los objetivos, breves y relevantes.</li><li>Secuencia en embudo: de lo general a lo específico, de lo menos a lo más delicado.</li><li>Pregunta final de cierre para ideas no previstas.</li></ol>
+        <h4>Redacción y conducción</h4>
+        <ol><li>Evitar preguntas capciosas o tendenciosas.</li><li>Usar sondeos, silencios y asentimientos para que el participante amplíe.</li></ol>
+        <h4>Preparación</h4>
+        <ol><li>Lugar silencioso, sin distracciones, apto para grabar.</li><li>Consentimiento informado, hoja de información y guía impresa.</li><li>Divulgación personal medida para no sesgar los datos.</li></ol>
+        <h4>Programación</h4>
+        <ol><li>Sesiones de alrededor de una hora, informando la duración al participante.</li><li>Limitar el número de entrevistas por día y registrar reflexiones entre sesiones.</li></ol>
+      </div>
+    </div>
+
+    <h3>2. La observación</h3>
+    <p class="note">Ficha con los elementos de observación de Hernández-Sampieri et al. (2014). Los campos se rellenan con el ejemplo de la universidad y son editables.</p>
+    <div class="obs" style="margin-top:8px">
+      <div class="box"><label for="o1">Ambiente físico (entorno)</label><textarea id="o1"></textarea></div>
+      <div class="box"><label for="o2">Ambiente social y humano</label><textarea id="o2"></textarea></div>
+      <div class="box"><label for="o3">Actividades o acciones individuales y colectivas</label><textarea id="o3"></textarea></div>
+      <div class="box"><label for="o4">Artefactos que utilizan los participantes</label><textarea id="o4"></textarea></div>
+      <div class="box"><label for="o5">Hechos relevantes, eventos e historias</label><textarea id="o5"></textarea></div>
+      <div class="box"><label for="o6">Papel del observador</label>
+        <select id="o6"><option>No participación</option><option>Participación pasiva</option><option selected>Participación moderada</option><option>Participación activa</option><option>Participación completa</option></select>
+        <p class="note" style="margin:8px 0 0">Anotaciones de campo: descriptivas, interpretativas, temáticas, personales y de reactividad de los participantes.</p></div>
+    </div>
+  </section>
+
+  <!-- 6 PROPUESTA -->
+  <section class="step" id="propuesta">
+    <p class="eyebrow">Paso 6</p>
+    <h2>Propuesta metodológica</h2>
+    <p class="note">El botón redacta el capítulo de metodología con los datos del paso 1, las opciones del paso 2, la matriz, el tipo y tamaño de muestra y las técnicas elegidas. Antes del texto aparecen las alertas de coherencia entre opciones. Las citas son paráfrasis de las fuentes del curso con su página. Flick (2026) se cita por sección (glosario o prefacio) porque su edición digital no está paginada; las fuentes que no están en la carpeta (Creswell y Creswell, Creswell y Guetterman, Creswell y Poth, Hernández-Sampieri y Mendoza, Hernández-Sampieri et al., Morse, Guest et al., Hennink y Kaiser, Malterud et al., Braun y Clarke, Lincoln y Guba, Stake, Yin, Patton y Tracy) van sin página hasta verificarlas en el original.</p>
+    <div class="actions">
+      <button id="btnProp" type="button">Construir propuesta metodológica</button>
+      <button id="cpProp" class="ghost" type="button" disabled>Copiar propuesta</button>
+      <button id="dlProp" class="ghost" type="button" disabled>Descargar Word (.doc)</button>
+      <span class="toast" id="t4" aria-live="polite"></span>
+    </div>
+    <div class="alerts" id="alertas" aria-live="polite"></div>
+    <article class="doc" id="doc"><p class="note" style="margin:0">La propuesta aparecerá aquí al pulsar «Construir propuesta metodológica».</p></article>
+    <aside class="cites" aria-label="Fundamentación del rigor y la ética">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>La triangulación combina distintos métodos, teorías, datos o investigadores en el estudio de un mismo asunto; la confiabilidad es el criterio con que se valora la calidad de la investigación cualitativa <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>La reflexividad reconoce que el investigador co-construye activamente la situación que estudia y aprovecha esa conciencia para interpretar los datos <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>La comprobación con participantes somete los resultados, o los datos, al acuerdo de quienes participaron <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>El consentimiento informado es el acuerdo voluntario de colaborar con una investigación que se ha explicado y que el participante comprende; es requisito de una investigación éticamente sólida <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>Los estándares de medición objetiva, replicabilidad y generalización estadística no son pertinentes para la investigación cualitativa; trasladarlos sin atender a sus fundamentos epistemológicos margina su valor <span class="cite">(Pownall, 2025, p. 556)</span>.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 7 CHECKLIST -->
+  <section class="step" id="checklist">
+    <p class="eyebrow">Paso 7</p>
+    <h2>Checklist de cumplimiento de procedimientos</h2>
+    <p class="note">Los grupos A a F se verifican solos con la información de la página y cambian al editar cualquier dato; «Revisar» señala algo admisible que conviene justificar. El grupo G registra a mano el avance del trabajo de campo y del análisis, y se guarda en este navegador.</p>
+    <div class="ckhead">
+      <div class="prog"><div class="bar" aria-hidden="true"><div class="rng" id="ckBar" style="width:0"></div></div><span id="ckPct" aria-live="polite"></span></div>
+      <div class="actions" style="margin:0"><button id="cpCk" class="ghost" type="button">Copiar checklist</button><span class="toast" id="t5" aria-live="polite"></span></div>
+    </div>
+    <div class="ckgrid2" id="ck"></div>
+    <aside class="cites" aria-label="Fundamentación del checklist">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>En la teoría fundamentada, recolección y análisis son procesos simultáneos e iterativos que se repiten hasta alcanzar la saturación <span class="cite">(White y Cooper, 2022, p. 340)</span>; por eso la muestra inicial se evalúa después de las primeras entrevistas.</li>
+        <li>El consentimiento informado es requisito de una investigación éticamente sólida, y la seudonimización impide identificar a personas e instituciones <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>La guía de entrevista enumera todos los temas que deben tratarse y mejora la comparabilidad de los datos <span class="cite">(Misoch, 2019, p. 66)</span>.</li>
+        <li>La transparencia en investigación cualitativa debe ajustarse a sus propias tradiciones y no a estándares cuantitativos de replicabilidad <span class="cite">(Pownall, 2025, p. 556)</span>.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 8 EXPORTAR -->
+  <section class="step" id="exportar">
+    <p class="eyebrow">Paso 8</p>
+    <h2>Exportar</h2>
+    <p class="note">La matriz se copia como tabla separada por tabulaciones (se pega en Excel o en una tabla de Word). El informe completo se copia como texto plano e incluye las opciones metodológicas.</p>
+    <div class="actions">
+      <button id="cpMat" type="button">Copiar matriz</button>
+      <button id="cpAll" class="ghost" type="button">Copiar informe completo</button>
+      <span class="toast" id="t2" aria-live="polite"></span>
+    </div>
+    <textarea id="fallback" rows="6" style="margin-top:12px" hidden aria-label="Texto para copiar manualmente"></textarea>
+    <aside class="cites" aria-label="Fundamentación de la exportación">
+      <p class="cites-h">Fundamentación en las fuentes</p>
+      <ul>
+        <li>Para que la investigación abierta sea transformadora debe adoptar el pluralismo metodológico y aprender de las tradiciones cualitativas, en lugar de imponer marcos cuantitativos y positivistas <span class="cite">(Pownall, 2025, p. 556)</span>.</li>
+        <li>Antes de compartir transcripciones o matrices, los nombres de personas e instituciones se sustituyen por nombres ficticios que no permitan identificar a los participantes <span class="cite">(Flick, 2026, glosario)</span>.</li>
+        <li>El metaanálisis cualitativo analiza de forma secundaria los hallazgos de estudios primarios sobre un mismo fenómeno y evalúa la calidad de esos estudios y ofrece una visión de conjunto del campo <span class="cite">(Timulak y Creaner, 2023, p. 4)</span>; por eso cada informe debe documentar con claridad su procedimiento.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <footer>
+    <b>Referencias</b>
+    <p class="note" style="margin:4px 0 0">Fuentes del curso (carpeta Investigación Cualitativa) y referencias metodológicas citadas en la página y en la propuesta. Formato APA 7.</p>
+    <ul id="refs"></ul>
+    <p class="credit">Diseñado por el <b>Mg. Mario Rafael Quiroz Martínez</b><span aria-hidden="true">·</span><span class="mono">d3magindesign</span><span aria-hidden="true">·</span><span>2026</span></p>
+  </footer>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const EJ={
+  titulo:"La interacción tutorial en la educación superior: estudio cualitativo en una universidad privada de Lima",
+  ambito:"Educación superior: tutoría académica",
+  escenario:"Estudiantes de II y IV ciclo y docentes tutores de una universidad privada de Lima",
+  problema:"Los estudiantes de los primeros ciclos asisten de forma irregular a las sesiones de tutoría y los docentes tutores reportan dificultad para sostener el acompañamiento académico. No se conoce cómo docentes y estudiantes construyen la relación tutorial ni qué prácticas sostienen o interrumpen esa interacción.",
+  pregunta:"¿Cómo se configura la interacción entre el docente tutor y el estudiante en la tutoría académica universitaria?",
+  objgen:"Comprender la configuración de la interacción entre el docente tutor y el estudiante en la tutoría académica universitaria.",
+  objesp:"Describir las percepciones de docentes y estudiantes sobre la relación tutorial\nAnalizar las prácticas de interacción durante las sesiones de tutoría\nIdentificar las condiciones institucionales que regulan la tutoría",
+  marco:"Relación tutorial: confianza; expectativas; rol del tutor\nPrácticas de interacción: comunicación verbal; retroalimentación; participación del estudiante\nCondiciones institucionales: plan de tutoría; registro de sesiones; horarios y espacios"
+};
+const OBS={
+  o1:"Una universidad: amplitud, distribución física de aulas, oficinas de tutoría y espacios comunes; mobiliario; acústica.",
+  o2:"Estructura organizacional, grupos y vínculos entre estudiantes, docentes tutores y coordinación académica.",
+  o3:"Interacción del docente tutor y el estudiante: turnos de habla, preguntas, acuerdos, duración de la sesión.",
+  o4:"Fichas de tutoría, plataforma virtual, registros de asistencia, celulares.",
+  o5:"Reprogramaciones, inasistencias, incidentes críticos durante la sesión."
+};
+const FIELDS=["titulo","ambito","escenario","problema","pregunta","objgen","objesp","marco","o1","o2","o3","o4","o5"];
+
+const TREE={
+  antes:[
+    {i:"Desarrollar diversas perspectivas",t:"Muestra variada (máxima variación)",d:"Casos con atributos distintos para mostrar perspectivas diversas y localizar coincidencias y diferencias."},
+    {i:"Describir algo problemático o aclarar casos",t:"Muestra de casos extremos",d:"Casos inusuales o en los límites del fenómeno que permiten aclarar lo que ocurre en el caso común."},
+    {i:"Generar una teoría o hipótesis, o explorar un concepto",t:"Muestra teórica o conceptual",d:"Unidades elegidas porque poseen atributos que contribuyen a desarrollar la teoría o el concepto."},
+    {i:"Alcanzar una composición predeterminada de la muestra",t:"Muestra por cuotas",d:"Se fijan cuotas por características (sexo, ciclo, área) y se completan con los casos disponibles."},
+    {i:"Describir lo «típico» a quienes no están familiarizados con el caso",t:"Muestra de casos-tipo",d:"Casos que representan la situación habitual; útil cuando importa la riqueza y profundidad, no la cantidad."},
+    {i:"Describir un subgrupo en profundidad",t:"Muestra homogénea",d:"Unidades con un mismo perfil o rasgos similares para centrarse en un tema concreto."},
+    {i:"Recoger la perspectiva de especialistas",t:"Muestra de expertos",d:"Personas con conocimiento especializado del tema; frecuente en estudios exploratorios."}
+  ],
+  despues:[
+    {i:"Tomar ventaja de una situación",t:"Muestra oportunista o por conveniencia",d:"Casos que se presentan durante el trabajo de campo o a los que el investigador tiene acceso."},
+    {i:"Localizar casos indispensables",t:"Muestra de casos importantes",d:"Casos que no pueden omitirse porque su ausencia dejaría incompleto el análisis."},
+    {i:"Explorar para confirmar o desaprobar hallazgos iniciales",t:"Muestra confirmativa",d:"Se agregan casos para validar o refutar los datos recolectados en la primera etapa."},
+    {i:"Localizar más participantes o sitios",t:"Muestra en cadena o bola de nieve",d:"Los participantes iniciales identifican a otros con las características requeridas."}
+  ]
+};
+const VOL={t:"Muestra de voluntarios (autoseleccionada)",d:"Participan quienes responden a una invitación; se usa cuando es difícil obtener casos."};
+
+const SIZES=[
+  {k:"fen",n:"Fenomenológico",c:"Fenomenológico",min:3,max:10,ext:[3,25],src:"Creswell y Creswell (2023) y Creswell y Poth (2024): 3–10, según Dukes (1984); Creswell y Poth (2024): 5–25, según Polkinghorne (1989); Hernández-Sampieri y Mendoza (2018): alrededor de 10 casos; Morse (1994): al menos 6"},
+  {k:"tf",n:"Teoría fundamentada",c:"Teoría fundamentada",min:20,max:30,ext:[20,60],src:"Creswell y Creswell (2023), Creswell y Poth (2024) y Hernández-Sampieri y Mendoza (2018): 20–30; Creswell y Poth (2024), en su tabla comparativa de enfoques: hasta 60 entrevistas; Morse (1994): 30–50"},
+  {k:"etn",n:"Etnográfico",c:"Etnográfico",min:30,max:50,src:"Un grupo cultural o social estudiado a lo largo del tiempo (Creswell y Guetterman, 2025; Creswell y Poth, 2024); Morse (1994) y Hernández-Sampieri y Mendoza (2018): 30–50 casos"},
+  {k:"nar",n:"Narrativo / historia de vida",c:"Narrativo / historia de vida",min:1,max:2,src:"Creswell y Creswell (2023) y Creswell y Poth (2024): 1–2 individuos"},
+  {k:"cas",n:"Estudio de caso",c:"Estudio de caso",min:1,max:5,src:"Caso único o múltiple; Creswell y Creswell (2023) y Creswell y Poth (2024): alrededor de 4–5 casos en estudios múltiples"},
+  {k:"ent",n:"Entrevistas en población homogénea",c:"Entrevistas (población homogénea)",min:9,max:17,src:"Hennink y Kaiser (2022): saturación entre 9 y 17 entrevistas; Guest et al. (2006): 12; Guest et al. (2020): de 6 a 7 entrevistas con un umbral de 5 % de información nueva"},
+  {k:"gf",n:"Grupos de enfoque (participantes por grupo)",c:"Grupos de enfoque (por sesión)",min:6,max:10,ext:[6,12],src:"Hernández-Sampieri y Mendoza (2018): 6–10 por sesión y 3–5 en temas complejos o sensibles; Barraza (2023, p. 56): 6–12, según Monje (2011), y 4–6 cuando los participantes han vivido el tema de forma intensa, según Krueger (1988); Hennink y Kaiser (2022): saturación con 4–8 grupos"},
+  {k:"ia",n:"Investigación-acción",c:"Investigación-acción",min:null,max:null,src:"Sin rango fijo: se define por el grupo o la comunidad que participa en el cambio"}
+];
+
+const UNITS=[
+  ["Significados","Definiciones, ideologías, estereotipos, creencias"],
+  ["Prácticas","Actividades rutinarias de las personas"],
+  ["Episodios","Sucesos dramáticos o incidentes críticos"],
+  ["Encuentros","Interacciones entre dos o más personas"],
+  ["Papeles o roles","Posiciones y funciones de las personas"],
+  ["Relaciones","Vínculos y redes entre actores"],
+  ["Grupos","Familias, equipos, redes"],
+  ["Organizaciones","Unidades con fines formales: escuelas, empresas"],
+  ["Comunidades","Asentamientos, comunidades virtuales"],
+  ["Subculturas","Grupos con códigos y valores propios"],
+  ["Estilos de vida","Ajustes de las personas a sus circunstancias"],
+  ["Artefactos y documentos","Objetos, registros, fotografías, materiales audiovisuales"],
+  ["Situaciones y lugares","Acontecimientos, momentos y escenarios en su contexto natural"]
+];
+
+function val(id){return ($(id).value||"").trim()}
+function lines(s){return s.split(/\n+/).map(x=>x.trim()).filter(Boolean)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function categorias(){
+  const out=[];
+  lines(val("marco")).forEach(l=>{
+    const m=l.match(/^([^:]+):(.*)$/);
+    if(m) out.push({cat:m[1].trim(),subs:m[2].split(/[;,]/).map(x=>x.trim()).filter(Boolean)});
+    else out.push({cat:l,subs:[]});
+  });
+  if(out.length) return out;
+  return lines(val("objesp")).map(o=>{
+    let w=o.replace(/^\w+(ar|er|ir)\s+/i,"").replace(/^(el|la|los|las|un|una)\s+/i,"").split(/\s+/).slice(0,5).join(" ");
+    return {cat:w.charAt(0).toUpperCase()+w.slice(1),subs:[]};
+  });
+}
+function tecnica(c){
+  const t=(c.cat+" "+c.subs.join(" ")).toLowerCase();
+  if(/document|registro|plan |plan$|sílabo|silabo|norma|informe|reglamento/.test(t)) return ["Análisis documental","Ficha de análisis documental","Documentos institucionales"];
+  if(/interacci|práctica|practica|conducta|comportamiento|actividad|acci[oó]n|participaci/.test(t)) return ["Observación participante","Ficha de observación / diario de campo","Sesiones observadas"];
+  return ["Entrevista semiestructurada","Guía de entrevista","Participantes"];
+}
+
+function renderMatriz(){
+  const C=categorias(), O=lines(val("objesp"));
+  $("tblHead").innerHTML=`<tbody>
+    <tr><td class="k">Ámbito temático</td><td>${esc(val("ambito")||"—")}</td></tr>
+    <tr><td class="k">Problema</td><td>${esc(val("problema")||"—")}</td></tr>
+    <tr><td class="k">Pregunta general</td><td>${esc(val("pregunta")||"—")}</td></tr>
+    <tr><td class="k">Objetivo general</td><td>${esc(val("objgen")||"—")}</td></tr></tbody>`;
+  let rows=C.map((c,i)=>{const t=tecnica(c);return `<tr><td>${esc(O[i]||"—")}</td><td><b>${esc(c.cat)}</b></td><td>${c.subs.length?c.subs.map(s=>`<span class="pill">${esc(s)}</span>`).join(""):"<i>Por definir</i>"}</td><td>${t[0]}</td><td>${t[1]}</td><td>${t[2]}</td></tr>`}).join("");
+  if(!rows) rows=`<tr><td colspan="6"><i>Ingrese objetivos específicos o categorías en el paso 1.</i></td></tr>`;
+  $("tblMat").innerHTML=`<thead><tr><th>Objetivo específico</th><th>Categoría</th><th>Subcategorías</th><th>Técnica</th><th>Instrumento</th><th>Fuente</th></tr></thead><tbody>${rows}</tbody>`;
+  const ex=C[0]||{cat:"Categoría",subs:["Subcategoría"]};
+  $("tblCod").innerHTML=`<thead><tr><th>Categoría / subcategoría</th><th>Código</th><th>Aserto interpretativo</th><th>Fragmento empírico</th><th>Fuente (ID)</th></tr></thead>
+   <tbody><tr><td>${esc(ex.cat)} / ${esc(ex.subs[0]||"—")}</td><td class="mono">COD-01</td><td><i>Síntesis del investigador sobre lo que comparten los segmentos</i></td><td><i>«Cita textual del participante»</i></td><td class="mono">E01, l. 24–31</td></tr>
+   <tr><td></td><td class="mono">COD-02</td><td></td><td></td><td></td></tr></tbody>`;
+  const esc_=val("escenario")||"el escenario del estudio";
+  $("ph1").innerHTML=` Unidades definidas a partir del planteamiento: <i>${esc(esc_)}</i>. Unidades complementarias seleccionadas en el paso 5.`;
+}
+
+function renderTree(){
+  const mom=document.querySelector('input[name=mom]:checked').value;
+  const cur=document.querySelector('input[name=int]:checked');
+  const prev=cur?cur.value:null;
+  $("intents").innerHTML=TREE[mom].map((o,i)=>`<label><input type="radio" name="int" value="${i}" id="int-${mom}-${i}" ${String(i)===prev||(!prev&&i===0)?"checked":""}><span>${esc(o.i)}</span></label>`).join("");
+  if(!document.querySelector('input[name=int]:checked')) document.querySelector('input[name=int]').checked=true;
+  document.querySelectorAll('input[name=int]').forEach(r=>r.addEventListener("change",showRes));
+  showRes();
+}
+function muestraSel(){
+  const mom=document.querySelector('input[name=mom]:checked').value;
+  const i=+document.querySelector('input[name=int]:checked').value;
+  return {mom, o:TREE[mom][i], vol:$("dificil").checked};
+}
+function showRes(){
+  const s=muestraSel();
+  let h=`<span class="lbl" style="font-size:12px;color:var(--muted)">Muestreo no probabilístico · ${s.mom==="antes"?"antes":"después"} de la recolección</span><br><b>${esc(s.o.t)}</b><p style="margin:4px 0 0">${esc(s.o.d)}</p>`;
+  if(s.vol) h+=`<p style="margin:10px 0 0"><b style="font-size:15px">+ ${VOL.t}</b><br>${VOL.d}</p>`;
+  $("resMuestra").innerHTML=h;
+  $("ph2").innerHTML=` Tipo seleccionado en el árbol: <b>${esc(s.o.t)}</b>${s.vol?" con voluntarios":""}.`;
+}
+
+function renderSizes(){
+  $("diseno").innerHTML=SIZES.map(s=>`<option value="${s.k}">${s.n}</option>`).join("");
+  $("tblSizes").innerHTML=`<thead><tr><th>Diseño</th><th>Mínimo</th><th>Máximo</th><th>Fuente</th></tr></thead><tbody>${SIZES.map(s=>`<tr><td>${s.n}</td><td style="font-variant-numeric:tabular-nums">${s.min??"—"}</td><td style="font-variant-numeric:tabular-nums">${s.max??"—"}</td><td>${s.src}</td></tr>`).join("")}</tbody>`;
+}
+function renderGauge(){
+  renderSizeChart();renderSat();
+  const s=SIZES.find(x=>x.k===$("diseno").value);
+  const n=parseInt($("nPrev").value,10);
+  if(s.min==null){$("gauge").innerHTML=`<div class="lbl">${s.n}</div><p style="margin:6px 0 0">${s.src}.</p>`;return}
+  const top=Math.max(s.max*1.6,n||0,4);
+  const pct=v=>Math.min(100,v/top*100);
+  let msg="";
+  if(n){ if(n<s.min) msg=`<div class="msg w">El tamaño previsto (${n}) está por debajo del mínimo orientativo (${s.min}). Justificar con la profundidad de los casos o ampliar.</div>`;
+    else if(n>s.max) msg=`<div class="msg w">El tamaño previsto (${n}) supera el máximo orientativo (${s.max}). Revisar si la saturación se alcanzaría antes.</div>`;
+    else msg=`<div class="msg o">El tamaño previsto (${n}) está dentro del rango orientativo. La cifra final la fija la saturación.</div>`;}
+  $("gauge").innerHTML=`<div class="lbl">${s.n}</div>
+   <div class="nums" style="margin-top:6px"><div><div class="n">${s.min}</div><div class="lbl">mínimo</div></div><div><div class="n">${s.max}</div><div class="lbl">máximo</div></div>${n?`<div><div class="n" style="color:var(--warn)">${n}</div><div class="lbl">previsto</div></div>`:""}</div>
+   <div class="bar" aria-hidden="true"><div class="rng" style="left:${pct(s.min)}%;width:${pct(s.max)-pct(s.min)}%"></div>${n?`<div class="mk" style="left:calc(${pct(n)}% - 1px)"></div>`:""}</div>
+   <p class="note" style="margin:4px 0 0">${s.src}.</p>${msg}`;
+}
+
+function renderUnits(){
+  const pre=["Prácticas","Encuentros","Papeles o roles","Relaciones","Artefactos y documentos"];
+  $("units").innerHTML=UNITS.map((u,i)=>`<label><input type="checkbox" id="u${i}" ${pre.includes(u[0])?"checked":""}><span>${u[0]}<small>${u[1]}</small></span></label>`).join("");
+}
+function unitsSel(){return UNITS.filter((u,i)=>$("u"+i).checked).map(u=>u[0])}
+
+function preguntas(){
+  const C=categorias(); const out=[];
+  C.forEach(c=>{
+    const subs=c.subs.length?c.subs:[c.cat];
+    out.push({cat:c.cat,qs:subs.map(s=>`¿Cómo describiría ${s.toLowerCase()} en su experiencia con ${c.cat.toLowerCase()}? ¿Podría dar un ejemplo concreto?`)});
+  });
+  return out;
+}
+function renderGuia(){
+  const P=preguntas();
+  $("guia").innerHTML=`<h4>Guía de entrevista semiestructurada generada</h4>
+   <p class="note" style="margin:0 0 6px">Una pregunta central por subcategoría, con solicitud de ejemplo. Ajustar la redacción al perfil del participante.</p>
+   <h4>Apertura</h4><ol><li>¿Podría contarme cuál es su rol y desde cuándo participa en ${esc((val("ambito")||"este ámbito").toLowerCase())}?</li></ol>
+   ${P.map(p=>`<h4>${esc(p.cat)}</h4><ol>${p.qs.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`).join("")}
+   <h4>Cierre</h4><ol><li>¿Hay algo más sobre este tema que no hayamos conversado y que considere importante?</li></ol>`;
+}
+
+function generar(){renderMatriz();renderArbol();renderGuia();showRes();save();if(!$("cpProp").disabled)construir();}
+
+/* figuras: SVG generados con los tokens de color de la página */
+function wrap(s,n){const out=[];let l="";String(s).split(/\s+/).filter(Boolean).forEach(w=>{if(l&&(l+" "+w).length>n){out.push(l);l=w}else l=l?l+" "+w:w});if(l)out.push(l);return out}
+function cut(s,n){s=String(s);return s.length>n?s.slice(0,n-1)+"…":s}
+function lcg(seed){let s=seed;return()=>(s=(s*1103515245+12345)%2147483648)/2147483648}
+function onPick(svg,sel,fn){svg.querySelectorAll(sel).forEach(g=>{g.addEventListener("click",()=>fn(g));g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fn(g)}})})}
+const TEC_CLS={"Entrevista semiestructurada":"s-int","Observación participante":"s-obs","Análisis documental":"s-doc"};
+
+function renderArbol(){
+  const C=categorias(),svg=$("arbol");
+  if(!C.length){svg.setAttribute("viewBox","0 0 760 60");svg.innerHTML=`<text x="12" y="34" class="s-mut">Ingrese categorías u objetivos específicos en el paso 1 para generar el árbol.</text>`;return}
+  const RH=30;let y=34,h="",links="";
+  const cats=C.map(c=>{
+    const subs=c.subs.length?c.subs:["Por definir"],lines=wrap(c.cat,24),ch=lines.length*15+26;
+    const slot=Math.max(subs.length*RH,ch+12),cy=y+slot/2;
+    const sy=subs.map((s,j)=>cy-(subs.length-1)*RH/2+j*RH);
+    y+=slot+10;
+    return {subs,lines,ch,cy,sy,t:tecnica(c)[0]};
+  });
+  const H=y+30,ry=(cats[0].cy+cats[cats.length-1].cy)/2;
+  const rl=wrap(val("ambito")||"Ámbito temático",22),rh=rl.length*15+18;
+  h+=`<rect x="10" y="${ry-rh/2}" width="180" height="${rh}" rx="7" class="s-fill"/>`+rl.map((l,i)=>`<text x="100" y="${ry-rh/2+22+i*15}" text-anchor="middle" class="s-on s-b">${esc(l)}</text>`).join("");
+  cats.forEach(k=>{
+    const top=k.cy-k.ch/2;
+    links+=`<path d="M190 ${ry}C225 ${ry} 225 ${k.cy} 260 ${k.cy}" class="s-lnm"/>`;
+    h+=`<rect x="260" y="${top}" width="200" height="${k.ch}" rx="7" class="${TEC_CLS[k.t]}"/>`+k.lines.map((l,i)=>`<text x="274" y="${top+19+i*15}" class="s-b">${esc(l)}</text>`).join("")+`<text x="274" y="${top+k.ch-9}" class="s-mut" style="font-size:10.5px">${esc(k.t)}</text>`;
+    k.subs.forEach((s,j)=>{const sy=k.sy[j];
+      links+=`<path d="M460 ${k.cy}C495 ${k.cy} 495 ${sy} 530 ${sy}" class="s-lnm"/>`;
+      h+=`<rect x="530" y="${sy-11}" width="220" height="22" rx="11" class="s-card"/><text x="544" y="${sy+4}">${esc(cut(s,32))}</text>`;});
+  });
+  const leg=Object.entries(TEC_CLS).map(([t,c],i)=>`<rect x="${10+i*215}" y="${H-22}" width="14" height="14" rx="3" class="${c}"/><text x="${30+i*215}" y="${H-11}" class="s-mut">${t}</text>`).join("");
+  svg.setAttribute("viewBox",`0 0 760 ${H}`);
+  svg.innerHTML=`<text x="10" y="16" class="s-mono s-mut">ÁMBITO</text><text x="260" y="16" class="s-mono s-mut">CATEGORÍAS</text><text x="530" y="16" class="s-mono s-mut">SUBCATEGORÍAS</text>${links}${h}${leg}`;
+}
+
+function renderProb(){
+  const r=lcg(7),sel=new Set();let h="";
+  while(sel.size<8)sel.add(Math.floor(r()*36));
+  h+=`<text x="20" y="22" class="s-disp" style="font-size:15px">Probabilístico</text><text x="20" y="40" class="s-mut">Marco muestral completo · selección al azar</text>`;
+  h+=`<rect x="20" y="54" width="340" height="128" rx="8" class="s-bg" stroke-dasharray="5 4"/><text x="30" y="70" class="s-mono s-mut" style="font-size:9.5px">MARCO MUESTRAL</text>`;
+  for(let i=0;i<36;i++){const cx=48+(i%9)*36,cy=88+Math.floor(i/9)*26;
+    h+=sel.has(i)?`<circle cx="${cx}" cy="${cy}" r="9" class="s-soft"/><circle cx="${cx}" cy="${cy}" r="5.5" class="s-fill"/>`:`<circle cx="${cx}" cy="${cy}" r="5" class="s-dot"/>`;}
+  h+=`<line x1="380" y1="8" x2="380" y2="226" class="s-ln"/>`;
+  h+=`<text x="400" y="22" class="s-disp" style="font-size:15px">No probabilístico (dirigido)</text><text x="400" y="40" class="s-mut">Sin marco muestral · selección por criterios</text>`;
+  for(let i=0;i<36;i++){const cx=426+(i%9)*36+(r()-.5)*16,cy=74+Math.floor(i/9)*28+(r()-.5)*14,k=Math.floor(r()*3);
+    if(k===1)h+=`<circle cx="${cx}" cy="${cy}" r="11" class="s-ar"/><rect x="${cx-5}" y="${cy-5}" width="10" height="10" rx="2" class="s-nd"/>`;
+    else if(k===2)h+=`<path d="M${cx} ${cy-6}L${cx+6} ${cy}L${cx} ${cy+6}L${cx-6} ${cy}Z" class="s-dot"/>`;
+    else h+=`<circle cx="${cx}" cy="${cy}" r="5" class="s-dot"/>`;}
+  h+=`<circle cx="26" cy="194" r="5.5" class="s-fill"/><text x="38" y="198" class="s-mut" style="font-size:11px">elemento elegido al azar</text>`;
+  h+=`<circle cx="406" cy="194" r="9" class="s-ar"/><rect x="401" y="189" width="10" height="10" rx="2" class="s-nd"/><text x="422" y="198" class="s-mut" style="font-size:11px">cumple el criterio (p. ej., vivió la experiencia) y se elige</text>`;
+  h+=`<text x="20" y="220" style="font-size:11.5px">Probabilidad conocida y distinta de cero; generalización estadística.</text>`;
+  h+=`<text x="400" y="220" style="font-size:11.5px">Representatividad conceptual; más rápido y económico.</text>`;
+  $("figProb").innerHTML=h;
+}
+
+function renderCrit(){
+  const R=[["Casos típicos","perfil representativo del fenómeno",[6,7,8]],["Casos extremos o desviados","polos que fijan los límites",[0,1,13,14]],["Variación máxima","continuo para hallar el núcleo",[0,3,7,11,14]],["Muestreo teórico","contrastar supuestos emergentes",[2,9,10]]];
+  let h="";
+  R.forEach((r,j)=>{const cy=28+j*40;
+    h+=`<text x="12" y="${cy-1}" class="s-b">${r[0]}</text><text x="12" y="${cy+14}" class="s-mut" style="font-size:11px">${r[1]}</text><line x1="222" y1="${cy}" x2="744" y2="${cy}" class="s-ln"/>`;
+    for(let i=0;i<15;i++){const x=232+i*36;h+=r[2].includes(i)?`<circle cx="${x}" cy="${cy}" r="7.5" class="${j===3?"s-nd":"s-fill"}"/>`:`<circle cx="${x}" cy="${cy}" r="4" class="s-dot"/>`}});
+  h+=`<path d="M304 138Q430 112 552 138" class="s-lnm" stroke-dasharray="3 3" marker-end="url(#ahm)"/>`;
+  h+=`<line x1="226" y1="184" x2="740" y2="184" class="s-ar" marker-start="url(#ah)" marker-end="url(#ah)"/>`;
+  h+=`<text x="226" y="204" class="s-mut" style="font-size:11px">polo bajo de la categoría</text><text x="484" y="204" text-anchor="middle" class="s-mut" style="font-size:11px">núcleo</text><text x="740" y="204" text-anchor="end" class="s-mut" style="font-size:11px">polo alto de la categoría</text>`;
+  $("figCrit").innerHTML=h;
+}
+
+const TAU=4.75; // curva calibrada para que ~92 % de los códigos aparezca a las 12 entrevistas (Guest et al., 2006)
+const satS=n=>1-Math.exp(-n/TAU);
+const NSAT=(()=>{let k=1;while(satS(k)-satS(k-1)>=0.01)k++;return k})();
+function lbl(x0,y0,ls,cls){const end=x0>600;return ls.map((l,i)=>`<text x="${end?x0-8:x0+8}" y="${y0+i*15}" text-anchor="${end?"end":"start"}" class="${cls}${i?"":" s-b"}" style="font-size:11.5px">${esc(l)}</text>`).join("")}
+function renderSat(){
+  const n=parseInt($("nPrev").value,10)||0,N=Math.max(30,Math.min(60,n+3));
+  const L=58,R=736,T=20,B=206,x=v=>L+v/(N+.5)*(R-L),y=p=>B-p*(B-T),bw=(R-L)/(N+.5)*.6;
+  let h="";
+  [0,.25,.5,.75,1].forEach(p=>{h+=`<line x1="${L}" y1="${y(p)}" x2="${R}" y2="${y(p)}" class="s-ln"/><text x="${L-8}" y="${y(p)+4}" text-anchor="end" class="s-mut" style="font-size:11px">${p*100} %</text>`});
+  for(let k=1;k<=N;k++){const d=satS(k)-satS(k-1);
+    h+=`<rect x="${x(k)-bw/2}" y="${y(d)}" width="${bw}" height="${B-y(d)}" rx="1.5" class="s-nd" style="stroke:none"/>`;
+    if(k===1||k%5===0)h+=`<text x="${x(k)}" y="${B+16}" text-anchor="middle" class="s-mut" style="font-size:11px">${k}</text>`}
+  let d=`M${x(0)} ${y(0)}`;for(let k=1;k<=N;k++)d+=`L${x(k)} ${y(satS(k))}`;
+  h+=`<path d="${d}" class="s-ar" style="stroke-width:2.2"/>`;
+  const xs=x(NSAT);
+  h+=`<line x1="${xs}" y1="${T}" x2="${xs}" y2="${B}" class="s-ar" stroke-dasharray="3 3"/><circle cx="${xs}" cy="${y(satS(NSAT))}" r="5" class="pulse"/><circle cx="${xs}" cy="${y(satS(NSAT))}" r="4.5" class="s-fill"/>`+lbl(xs,T+(B-T)*.42,[`Punto de saturación (n ≈ ${NSAT})`,"< 1 % de códigos nuevos"],"s-acc");
+  if(n){const xn=x(Math.min(n,N)),p=satS(n);
+    h+=`<line x1="${xn}" y1="${T}" x2="${xn}" y2="${B}" class="s-warn"/><circle cx="${xn}" cy="${y(p)}" r="5" style="fill:var(--warn)"/>`+lbl(xn,T+(B-T)*.7,[`n previsto = ${n}`,`≈ ${Math.round(p*100)} % de los códigos`],"s-wt");}
+  h+=`<rect x="${R-232}" y="${T+16}" width="226" height="50" rx="6" class="s-card"/><rect x="${R-220}" y="${T+26}" width="12" height="12" rx="2" class="s-nd" style="stroke:none"/><text x="${R-200}" y="${T+36}" class="s-mut">Aporte de cada entrevista</text><line x1="${R-220}" y1="${T+52}" x2="${R-208}" y2="${T+52}" class="s-ar" style="stroke-width:2.2"/><text x="${R-200}" y="${T+56}" class="s-mut">Códigos acumulados</text>`;
+  h+=`<text x="${(L+R)/2}" y="${B+38}" text-anchor="middle" class="s-mut">Entrevistas o casos analizados (n)</text>`;
+  $("figSat").innerHTML=h;
+}
+
+function renderSizeChart(){
+  const svg=$("figSize"),cur=$("diseno").value,n=parseInt($("nPrev").value,10)||0,refocus=svg.contains(document.activeElement);
+  const L=250,R=730,T=30,RH=30,lx=v=>L+Math.log(v)/Math.log(70)*(R-L),B=T+SIZES.length*RH;
+  let h="";
+  [1,2,3,5,10,20,30,50].forEach(t=>{h+=`<line x1="${lx(t)}" y1="${T-6}" x2="${lx(t)}" y2="${B}" class="s-ln"/><text x="${lx(t)}" y="${B+16}" text-anchor="middle" class="s-mut" style="font-size:11px">${t}</text>`});
+  if(n){const xn=lx(Math.min(n,70));h+=`<line x1="${xn}" y1="${T-10}" x2="${xn}" y2="${B}" class="s-warn" pointer-events="none"/><text x="${xn>640?xn-6:xn+6}" y="${T-12}" text-anchor="${xn>640?"end":"start"}" class="s-wt s-b" style="font-size:11.5px">n previsto = ${n}</text>`;}
+  SIZES.forEach((s,i)=>{const y=T+i*RH,cy=y+RH/2,on=s.k===cur,halo=`paint-order:stroke;stroke-width:4px;stroke-linejoin:round;stroke:var(${on?"--node-soft":"--surface"})`;
+    h+=`<g class="s-hit" data-k="${s.k}" role="button" tabindex="0" aria-pressed="${on}" aria-label="${esc(s.n)}"><rect x="2" y="${y+2}" width="736" height="${RH-4}" rx="5" class="s-row${on?" s-sel":""}"/><text x="12" y="${cy+4}" class="${on?"s-b":""}">${esc(s.c)}</text>`;
+    if(s.min==null)h+=`<text x="${L}" y="${cy+4}" class="s-mut" font-style="italic" style="${halo}">Sin rango fijo: lo define el grupo que participa en el cambio</text>`;
+    else{const e=s.ext||[s.min,s.max],x0=lx(e[0])-5,x1=Math.max(lx(e[1]),lx(s.max))+5,txt=`${s.min}–${s.max}`+(s.ext?` · ampliado ${s.ext[0]}–${s.ext[1]}`:"");
+      if(s.ext)h+=`<rect x="${x0}" y="${cy-6}" width="${x1-x0}" height="12" rx="6" class="s-soft"/>`;
+      h+=`<rect x="${lx(s.min)-5}" y="${cy-5}" width="${lx(s.max)-lx(s.min)+10}" height="10" rx="5" class="s-fill" style="opacity:${on?1:.6}"/>`;
+      h+=x1>600?`<text x="${lx(e[0])-12}" y="${cy+4}" text-anchor="end" class="${on?"s-b":"s-mut"}" style="font-size:11px;${halo}">${txt}</text>`:`<text x="${x1+8}" y="${cy+4}" class="${on?"s-b":"s-mut"}" style="font-size:11px;${halo}">${txt}</text>`;}
+    h+=`</g>`;});
+  h+=`<text x="${(L+R)/2}" y="${B+36}" text-anchor="middle" class="s-mut">Casos o participantes (escala logarítmica)</text>`;
+  svg.setAttribute("viewBox",`0 0 760 ${B+46}`);
+  svg.innerHTML=h;
+  onPick(svg,".s-hit",g=>{$("diseno").value=g.dataset.k;renderGauge();save();});
+  if(refocus){const f=svg.querySelector(`[data-k="${cur}"]`);if(f)f.focus();}
+}
+
+function renderRadial(){
+  const svg=$("figUnits"),cx=380,cy=176,rx=292,ry=134,N=UNITS.length,refocus=svg.contains(document.activeElement)?document.activeElement.dataset.i:null;
+  let lines="",nodes="";
+  UNITS.forEach((u,i)=>{const a=-Math.PI/2+i*2*Math.PI/N,x=cx+rx*Math.cos(a),y=cy+ry*Math.sin(a),on=$("u"+i).checked,w=Math.max(84,u[0].length*6.3+24);
+    lines+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" class="${on?"s-ar flowln":"s-ln"}"${on?"":' stroke-dasharray="4 4"'}/>`;
+    nodes+=`<g class="s-hit" data-i="${i}" role="checkbox" aria-checked="${on}" tabindex="0" aria-label="${esc(u[0])}: ${esc(u[1])}"><title>${esc(u[1])}</title><rect x="${x-w/2}" y="${y-15}" width="${w}" height="30" rx="15" class="${on?"s-int":"s-card"}"/><text x="${x}" y="${y+4}" text-anchor="middle" class="${on?"s-b":"s-mut"}">${esc(u[0])}</text></g>`;});
+  svg.innerHTML=`${lines}<ellipse cx="${cx}" cy="${cy}" rx="80" ry="44" class="s-fill"/><text x="${cx}" y="${cy-2}" text-anchor="middle" class="s-on s-b" style="font-size:13px">Personas o casos</text><text x="${cx}" y="${cy+15}" text-anchor="middle" class="s-on" style="font-size:11px">unidad de partida</text>${nodes}`;
+  onPick(svg,".s-hit",g=>{const c=$("u"+g.dataset.i);c.checked=!c.checked;renderRadial();refreshCk();});
+  if(refocus!=null){const f=svg.querySelector(`[data-i="${refocus}"]`);if(f)f.focus();}
+}
+
+/* referencias APA 7: m reconoce la cita en el texto para listar solo las usadas en la propuesta */
+const REFS=[
+  {m:/Batzoglou[ ,(]+2024/,t:"Batzoglou, A. (2024). [Reseña del libro <i>Interpretative phenomenological analysis: Theory, method and research</i>, de J. A. Smith, P. Flowers y M. Larkin]. <i>European Journal of Psychotherapy &amp; Counselling, 26</i>(3–4), 459–460. https://doi.org/10.1080/13642537.2024.2388380"},
+  {m:/Bhangu et al\.[ ,(]+2023/,t:"Bhangu, S., Provost, F. y Caduff, C. (2023). Introduction to qualitative research methods – Part I. <i>Perspectives in Clinical Research, 14</i>(1), 39–42. https://doi.org/10.4103/picr.picr_253_22"},
+  {m:/Braun y Clarke[ ,(]+2006/,t:"Braun, V. y Clarke, V. (2006). Using thematic analysis in psychology. <i>Qualitative Research in Psychology, 3</i>(2), 77–101. https://doi.org/10.1191/1478088706qp063oa"},
+  {m:/Braun y Clarke[ ,(]+(2006, )?2021/,t:"Braun, V. y Clarke, V. (2021). To saturate or not to saturate? Questioning data saturation as a useful concept for thematic analysis and sample-size rationales. <i>Qualitative Research in Sport, Exercise and Health, 13</i>(2), 201–216. https://doi.org/10.1080/2159676X.2019.1704846"},
+  {m:/Bunge[ ,(]+s\. f\./,t:"Bunge, M. (s. f.). <i>La ciencia. Su método y su filosofía</i> [Lectura del curso, semana 1]."},
+  {m:/Creswell[ ,(]+2013/,t:"Creswell, J. W. (2013). <i>Qualitative inquiry and research design: Choosing among five approaches</i> (3.ª ed.). Sage."},
+  {m:/Barraza[ ,(]+2023/,t:"Barraza Macías, A. (2023). <i>Metodología de la investigación cualitativa. Una perspectiva interpretativa</i>. Benessere, Centro de Intervención para el Bienestar Físico y Mental."},
+  {m:/Creswell y Creswell[ ,(]+2023/,t:"Creswell, J. W. y Creswell, J. D. (2023). <i>Research design: Qualitative, quantitative, and mixed methods approaches</i> (6.ª ed.). Sage."},
+  {m:/Creswell y Guetterman[ ,(]+2025/,t:"Creswell, J. W. y Guetterman, T. C. (2025). <i>Educational research: Planning, conducting, and evaluating quantitative and qualitative research</i> (7.ª ed.). Pearson."},
+  {m:/Creswell y Poth[ ,(]+2024/,t:"Creswell, J. W. y Poth, C. N. (2024). <i>Qualitative inquiry and research design: Choosing among five approaches</i> (5.ª ed.). Sage."},
+  {m:/Flick[ ,(]+2026/,t:"Flick, U. (2026). <i>An introduction to qualitative research</i> (7.ª ed.). Sage. https://doi.org/10.4135/9781036231712"},
+  {m:/Fuster Guillen[ ,(]+2019/,t:"Fuster Guillen, D. E. (2019). Investigación cualitativa: Método fenomenológico hermenéutico. <i>Propósitos y Representaciones, 7</i>(1), 201–229. https://doi.org/10.20511/pyr2019.v7n1.267"},
+  {m:/Guest et al\.[ ,(]+2006/,t:"Guest, G., Bunce, A. y Johnson, L. (2006). How many interviews are enough? An experiment with data saturation and variability. <i>Field Methods, 18</i>(1), 59–82. https://doi.org/10.1177/1525822X05279903"},
+  {m:/Hennink y Kaiser[ ,(]+2022/,t:"Hennink, M. y Kaiser, B. N. (2022). Sample sizes for saturation in qualitative research: A systematic review of empirical tests. <i>Social Science &amp; Medicine, 292</i>, 114523. https://doi.org/10.1016/j.socscimed.2021.114523"},
+  {m:/Guest et al\.[ ,(]+2020/,t:"Guest, G., Namey, E. y Chen, M. (2020). A simple method to assess and report thematic saturation in qualitative research. <i>PLOS ONE, 15</i>(5), e0232076. https://doi.org/10.1371/journal.pone.0232076"},
+  {m:/Hernández-Sampieri y Mendoza[ ,(]+2018/,t:"Hernández-Sampieri, R. y Mendoza, C. P. (2018). <i>Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta</i>. McGraw-Hill Interamericana."},
+  {m:/Hernández-Sampieri et al\.[ ,(]+2014/,t:"Hernández-Sampieri, R., Fernández, C. y Baptista, P. (2014). <i>Metodología de la investigación</i> (6.ª ed.). McGraw-Hill."},
+  {m:/Lincoln y Guba[ ,(]+1985/,t:"Lincoln, Y. S. y Guba, E. G. (1985). <i>Naturalistic inquiry</i>. Sage."},
+  {m:/Lincoln y Guba[ ,(]+2000/,t:"Lincoln, Y. S. y Guba, E. G. (2000). Paradigmatic controversies, contradictions, and emerging confluences. En N. K. Denzin e Y. S. Lincoln (Eds.), <i>Handbook of qualitative research</i> (2.ª ed., pp. 163–188). Sage."},
+  {m:/Malterud et al\.[ ,(]+2016/,t:"Malterud, K., Siersma, V. D. y Guassora, A. D. (2016). Sample size in qualitative interview studies: Guided by information power. <i>Qualitative Health Research, 26</i>(13), 1753–1760. https://doi.org/10.1177/1049732315617444"},
+  {m:/Mihas[ ,(]+2023/,t:"Mihas, P. (2023). Qualitative research methods: Approaches to qualitative data analysis. En R. J. Tierney, F. Rizvi y K. Ercikan (Eds.), <i>International encyclopedia of education</i> (4.ª ed., Vol. 12, pp. 302–313). Elsevier. https://doi.org/10.1016/B978-0-12-818630-5.11029-2"},
+  {m:/Misoch[ ,(]+2019/,t:"Misoch, S. (2019). <i>Qualitative Interviews</i> (2.ª ed.). De Gruyter Oldenbourg."},
+  {m:/Morse[ ,(]+1994/,t:"Morse, J. M. (1994). Designing funded qualitative research. En N. K. Denzin e Y. S. Lincoln (Eds.), <i>Handbook of qualitative research</i> (pp. 220–235). Sage."},
+  {m:/Toscano Achote[ ,(]+2024/,t:"Toscano Achote, E. M. (2024). <i>Modelo pedagógico de enseñanza enfocada en el aprendizaje basado en proyectos para la formación de competencias tecnológicas en escenarios de educación superior en Quito, Ecuador</i> [Tesis doctoral, Universidad Metropolitana de Educación, Ciencia y Tecnología]. REDI-UMECIT."},
+  {m:/Lozano Martelo[ ,(]+2025/,t:"Lozano Martelo, M. J. (2025). <i>Evaluación del impacto del modelo pedagógico diseñado de competencias socioemocionales para la convivencia escolar en instituciones educativas públicas de Fundación, Magdalena</i> [Tesis doctoral, Universidad Metropolitana de Educación, Ciencia y Tecnología]. REDI-UMECIT."},
+  {m:/Morse[ ,(]+2000/,t:"Morse, J. M. (2000). Determining sample size. <i>Qualitative Health Research, 10</i>(1), 3–5. https://doi.org/10.1177/104973200129118183"},
+  {m:/Moser y Korstjens[ ,(]+2017/,t:"Moser, A. y Korstjens, I. (2017). Series: Practical guidance to qualitative research. Part 1: Introduction. <i>European Journal of General Practice, 23</i>(1), 271–273. https://doi.org/10.1080/13814788.2017.1375093"},
+  {m:/Okoko et al\.[ ,(]+2023/,t:"Okoko, J. M., Tunison, S. y Walker, K. D. (2023). Introduction to a variety of qualitative research methods. En J. M. Okoko, S. Tunison y K. D. Walker (Eds.), <i>Varieties of qualitative research methods</i> (pp. 1–8). Springer. https://doi.org/10.1007/978-3-031-04394-9_1"},
+  {m:/Patton[ ,(]+2015/,t:"Patton, M. Q. (2015). <i>Qualitative research &amp; evaluation methods</i> (4.ª ed.). Sage."},
+  {m:/Pownall[ ,(]+2025/,t:"Pownall, M. (2025). Bridging qualitative methods and open research. <i>Nature Reviews Psychology, 4</i>, 556–557. https://doi.org/10.1038/s44159-025-00477-3"},
+  {m:/Robinson y Bailey-Rodriguez[ ,(]+2026/,t:"Robinson, O. C. y Bailey-Rodriguez, D. (2026). Deductive qualitative research: An integrative approach to designing studies. <i>Qualitative Research in Psychology, 23</i>(2), 369–384. https://doi.org/10.1080/14780887.2025.2604773"},
+  {m:/Singh[ ,(]+2015/,t:"Singh, K. D. (2015). Creating your own qualitative research approach: Selecting, integrating and operationalizing philosophy, methodology and methods. <i>Vision, 19</i>(2), 132–146. https://doi.org/10.1177/0972262915575657"},
+  {m:/Stake[ ,(]+1995/,t:"Stake, R. E. (1995). <i>The art of case study research</i>. Sage."},
+  {m:/Timulak y Creaner[ ,(]+2023/,t:"Timulak, L. y Creaner, M. (2023). <i>Essentials of qualitative meta-analysis</i>. American Psychological Association."},
+  {m:/Tobin[ ,(]+2025/,t:"Tobin, J. (2025). An argument for method in qualitative research. <i>International Journal of Qualitative Studies in Education, 38</i>(4), 559–570. https://doi.org/10.1080/09518398.2024.2416699"},
+  {m:/Tracy[ ,(]+2010/,t:"Tracy, S. J. (2010). Qualitative quality: Eight “big-tent” criteria for excellent qualitative research. <i>Qualitative Inquiry, 16</i>(10), 837–851. https://doi.org/10.1177/1077800410383121"},
+  {m:/Vega-Malagón et al\.[ ,(]+2014/,t:"Vega-Malagón, G., Ávila-Morales, J., Vega-Malagón, A. J., Camacho-Calderón, N., Becerril-Santos, A. y Leo-Amador, G. E. (2014). Paradigmas en la investigación. Enfoque cuantitativo y cualitativo. <i>European Scientific Journal, 10</i>(15), 523–528."},
+  {m:/White y Cooper[ ,(]+2022/,t:"White, R. E. y Cooper, K. (2022). <i>Qualitative research in the post-modern era: Critical approaches and selected methodologies</i>. Springer. https://doi.org/10.1007/978-3-030-85124-8"},
+  {m:/Wolgemuth et al\.[ ,(]+2026/,t:"Wolgemuth, J. R., St. Peter, C. C., Giovagnoli, R. y Milor, E. (2026). Introduction to “Embracing qualitative research in behavior analysis: Lessons of qualitative research in/and practice”. Part 1, theoretical and methodological perspectives. <i>Behavior Analysis in Practice, 19</i>, 387–390. https://doi.org/10.1007/s40617-026-01156-2"},
+  {m:/Yin[ ,(]+2018/,t:"Yin, R. K. (2018). <i>Case study research and applications: Design and methods</i> (6.ª ed.). Sage."}
+];
+function renderRefs(){$("refs").innerHTML=REFS.slice().sort((a,b)=>a.t.localeCompare(b.t,"es")).map(r=>`<li>${r.t.replace(/(https:\/\/doi\.org\/\S+)$/,'<a href="$1" target="_blank" rel="noopener">$1</a>')}</li>`).join("")}
+
+/* opciones metodológicas: [clave, etiqueta, fundamentación] */
+const MET={
+  par:{l:"Paradigma",o:[
+    ["int","Interpretativo-constructivista","La realidad se comprende desde los significados que construyen los participantes (Lincoln y Guba, 2000); surgió como contrapeso al positivismo (Moser y Korstjens, 2017, p. 271)."],
+    ["soc","Sociocrítico","Une la comprensión del fenómeno con la transformación de la práctica y la participación de los implicados (White y Cooper, 2022, p. 388)."],
+    ["pos","Pospositivista (cualitativo deductivo)","Contrasta un marco teórico previo con datos cualitativos mediante preguntas de tipo deductivo (Robinson y Bailey-Rodriguez, 2026, p. 369)."],
+    ["pra","Pragmático","Elige los métodos por su utilidad para responder la pregunta, con apertura a combinar enfoques (Vega-Malagón et al., 2014, p. 523)."]]},
+  log:{l:"Lógica del razonamiento",o:[
+    ["ind","Inductiva","Las categorías se construyen desde los datos (Mihas, 2023, p. 303)."],
+    ["abd","Abductiva (deductiva-inductiva)","Las categorías a priori operan como conceptos sensibilizadores y se mantiene la apertura a categorías emergentes (Mihas, 2023, p. 303)."],
+    ["ded","Deductiva","Se parte de teoría previa y se formulan preguntas deductivas en lugar de hipótesis (Robinson y Bailey-Rodriguez, 2026, p. 370)."]]},
+  tipo:{l:"Tipo de investigación",o:[
+    ["bas","Básica","Amplía el conocimiento sobre el fenómeno, sin una aplicación inmediata."],
+    ["apl","Aplicada","Orienta sus resultados a mejorar una situación práctica concreta."]]},
+  alc:{l:"Alcance",o:[
+    ["exp","Exploratorio","Indaga un fenómeno poco estudiado o desde una perspectiva nueva."],
+    ["des","Descriptivo","Detalla cómo se manifiesta el fenómeno y cuáles son sus rasgos."],
+    ["com","Interpretativo-comprensivo","Busca comprender los significados que los participantes atribuyen a su experiencia."]]},
+  dis:{l:"Diseño (tradición de indagación)",o:[
+    ["fen","Fenomenológico hermenéutico","Describe e interpreta la esencia de las experiencias vividas en cuatro etapas: clarificación de presupuestos, recogida de la experiencia, reflexión estructural y escritura (Fuster Guillen, 2019, p. 217)."],
+    ["ipa","Análisis fenomenológico interpretativo (AFI)","Articula fenomenología, hermenéutica e ideografía para examinar cómo cada participante da sentido a su experiencia (Batzoglou, 2024, p. 459)."],
+    ["tf","Teoría fundamentada","Desarrolla una teoría desde el material empírico (Flick, 2026, glosario); recolección y análisis son simultáneos e iterativos hasta la saturación (White y Cooper, 2022, p. 340)."],
+    ["etn","Etnográfico","Estudia la cultura de un grupo como totalidad mediante inmersión prolongada; memos y códigos identifican sus componentes (Mihas, 2023, p. 307)."],
+    ["nar","Narrativo","Recoge relatos para transferir y traducir saberes no cuantificables, como la experiencia (White y Cooper, 2022, p. 98)."],
+    ["cas","Estudio de caso","Examina un caso acotado en tiempo y lugar, en su contexto real (Mihas, 2023, p. 306): una persona, un evento, una organización o un fenómeno (White y Cooper, 2022, p. 234)."],
+    ["ia","Investigación-acción","Investiga una situación social a la vez que promueve el cambio y la participación colaborativa; la reflexión crítica une ambas funciones (White y Cooper, 2022, p. 388)."],
+    ["gen","Cualitativo descriptivo-interpretativo","Diseño genérico con análisis temático, práctica que no está atada a una sola epistemología o paradigma (Mihas, 2023, p. 304)."],
+    ["qma","Metaanálisis cualitativo","Análisis secundario de los hallazgos de estudios cualitativos primarios sobre un mismo fenómeno, con evaluación de su calidad (Timulak y Creaner, 2023, p. 4)."]]},
+  caso:{l:"Modalidad del caso",o:[
+    ["hol","Único holístico","Un caso analizado como totalidad (Yin, 2018)."],
+    ["inc","Único con unidades incrustadas","Un caso con subunidades de análisis, por ejemplo programas o secciones (Yin, 2018)."],
+    ["mul","Múltiple","De dos a cinco casos comparados entre sí (Yin, 2018; Creswell y Poth, 2024)."]]},
+  tmp:{l:"Temporalidad",o:[
+    ["tra","Transversal","La información se recoge en un solo momento."],
+    ["lon","Longitudinal","La información se recoge en dos o más momentos para seguir los cambios."]]},
+  mod:{l:"Modalidad de recolección",o:[["pre","Presencial",""],["vir","Virtual",""],["hib","Híbrida",""]]},
+  ana:{l:"Estrategia de análisis",o:[
+    ["atr","Análisis temático reflexivo","Seis fases, de la familiarización con los datos a la redacción del informe (Braun y Clarke, 2006, 2021)."],
+    ["cod","Codificación abierta, axial y selectiva","Propia de la teoría fundamentada; parte de la codificación inicial (Flick, 2026, glosario)."],
+    ["afi","Análisis fenomenológico interpretativo","Análisis caso por caso y luego entre casos (Batzoglou, 2024, p. 459)."],
+    ["fh","Análisis fenomenológico hermenéutico","Reflexión estructural y escritura del texto fenomenológico (Fuster Guillen, 2019, p. 217)."],
+    ["acc","Análisis de contenido cualitativo","Libro de códigos inicial derivado de las preguntas, con apertura a códigos inductivos (Mihas, 2023, p. 303)."],
+    ["nar","Análisis narrativo","Examina la forma y el contenido de los relatos (Mihas, 2023, p. 302)."],
+    ["sin","Metasíntesis de hallazgos","Integra los hallazgos de estudios primarios (Timulak y Creaner, 2023, p. 4)."]]},
+  sw:{l:"Apoyo informático",o:[["atl","ATLAS.ti",""],["nvi","NVivo",""],["max","MAXQDA",""],["tag","Taguette (software libre)",""],["man","Matriz en hoja de cálculo",""]]},
+  jus:{l:"Justificación del tamaño",o:[
+    ["sat","Saturación teórica","La recolección se cierra cuando nuevos datos ya no aportan ideas sobre las categorías (Flick, 2026, glosario)."],
+    ["pod","Poder de información","Cinco rasgos: objetivo, especificidad de la muestra, teoría, diálogo y estrategia de análisis (Malterud et al., 2016)."],
+    ["jui","Juicio situado","El tamaño responde a la riqueza de los datos y no a la saturación (Braun y Clarke, 2021)."]]}
+};
+const MCK={
+  tec:{l:"Técnicas e instrumentos",o:[["es","Entrevista semiestructurada","Guía de entrevista"],["ep","Entrevista en profundidad","Guía temática abierta"],["gf","Grupo focal","Guía de grupo focal"],["op","Observación participante","Notas y diario de campo"],["on","Observación no participante","Protocolo de observación"],["ad","Análisis documental","Ficha de análisis documental"],["ap","Análisis de producciones","Matriz de análisis de producciones"],["dc","Diario de campo del investigador","Registro reflexivo"],["fc","Ficha de caracterización","Perfil de los participantes"]]},
+  rig:{l:"Criterios de rigor",o:[["cre","Credibilidad","Triangulación y comprobación con participantes"],["trf","Transferibilidad","Descripción densa del contexto"],["dep","Dependencia","Registro de decisiones y auditoría"],["cnf","Confirmabilidad","Reflexividad y diario del investigador"],["cri","Cristalización","Criterios de calidad de Tracy (2010)"]]},
+  eti:{l:"Consideraciones éticas",o:[["ci","Consentimiento informado",""],["as","Asentimiento de menores",""],["seu","Seudonimización",""],["res","Resguardo de los datos",""],["dev","Devolución de resultados",""],["com","Aprobación del comité de ética",""]]}
+};
+const SIZE_OF={fen:"fen",ipa:"fen",tf:"tf",etn:"etn",nar:"nar",ia:"ia",gen:"ent"};
+const lab=(k,v)=>{const o=MET[k].o.find(x=>x[0]===v);return o?o[1]:""};
+const labs=(k,arr)=>MCK[k].o.filter(o=>arr.includes(o[0]));
+const lc1=s=>s&&/^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]/.test(s)?s.charAt(0).toLowerCase()+s.slice(1):s;
+const noDot=s=>String(s).trim().replace(/[.;]+$/,"");
+
+function renderMet(){
+  const sel=Object.entries(MET).map(([k,m])=>`<div class="box" id="mb-${k}"><label for="m-${k}">${m.l}</label><select id="m-${k}">${m.o.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join("")}</select><p class="mh" id="mh-${k}"></p></div>`).join("");
+  const ck=Object.entries(MCK).map(([k,m])=>`<fieldset class="box wide"><legend>${m.l}</legend><div class="ckgrid">${m.o.map(o=>`<label class="ck"><input type="checkbox" id="m-${k}-${o[0]}"><span>${o[1]}${o[2]?`<small>${o[2]}</small>`:""}</span></label>`).join("")}</div></fieldset>`).join("");
+  $("met").innerHTML=sel+ck;
+  Object.keys(MET).forEach(k=>$("m-"+k).addEventListener("change",()=>{metHints();if(k==="dis")syncSize();save()}));
+  $("met").querySelectorAll("input[type=checkbox]").forEach(c=>c.addEventListener("change",save));
+  metHints();
+}
+function metHints(){Object.entries(MET).forEach(([k,m])=>{const o=m.o.find(x=>x[0]===$("m-"+k).value);$("mh-"+k).textContent=o?o[2]:""});$("mb-caso").hidden=$("m-dis").value!=="cas"}
+function getMet(){const d={};Object.keys(MET).forEach(k=>d[k]=$("m-"+k).value);Object.entries(MCK).forEach(([k,m])=>d[k]=m.o.filter(o=>$(`m-${k}-${o[0]}`).checked).map(o=>o[0]));return d}
+function setMet(d){if(!d)return;Object.keys(MET).forEach(k=>{if(d[k]!=null)$("m-"+k).value=d[k]});Object.entries(MCK).forEach(([k,m])=>{if(Array.isArray(d[k]))m.o.forEach(o=>$(`m-${k}-${o[0]}`).checked=d[k].includes(o[0]))});metHints()}
+function syncSize(){const k=SIZE_OF[$("m-dis").value];if(k){$("diseno").value=k;renderGauge()}}
+
+/* sugerencia: lee el paso 1 y propone una opción coherente por selector */
+function sugerir(silent){
+  const T=[val("titulo"),val("problema"),val("pregunta"),val("objgen"),val("objesp"),val("escenario")].join(" ").toLowerCase(),og=val("objgen").toLowerCase(),C=categorias();
+  let dis="gen",why="no se identifican rasgos de una tradición específica";
+  if(/metaan[aá]lisis|metas[ií]ntesis|revisi[oó]n sistem[aá]tica/.test(T)){dis="qma";why="el estudio integra hallazgos de otras investigaciones"}
+  else if(/transformar|mejorar la pr[aá]ctica|cambio social|participativ|empoderar/.test(T)){dis="ia";why="el propósito incluye transformar la práctica con los participantes"}
+  else if(/historias? de vida|trayectoria|relato|biograf/.test(T)){dis="nar";why="el foco está en relatos o trayectorias"}
+  else if(/cultura|comunidad|costumbre|ritual|cosmovisi/.test(T)){dis="etn";why="el foco está en la cultura de un grupo"}
+  else if(/implementaci[oó]n|estudio de caso|\bcaso\b|modelo pedag/.test(T)){dis="cas";why="el fenómeno está acotado a una implementación, un programa o una institución concretos"}
+  else if(/proceso|c[oó]mo se (configura|construye|desarrolla|produce)|generar (una )?teor[ií]a|por qu[eé]/.test(T)){dis="tf";why="la pregunta indaga un proceso que se busca explicar"}
+  else if(/experiencia|vivencia|viven|experimentan|significado/.test(T)){dis="fen";why="la pregunta se centra en la experiencia vivida y su significado"}
+  const log=(dis==="tf"||dis==="qma")?"ind":(val("marco")&&C.length?"abd":"ind");
+  const tec=new Set();
+  if(dis!=="qma"){C.forEach(c=>tec.add({"Entrevista semiestructurada":"es","Observación participante":"op","Análisis documental":"ad"}[tecnica(c)[0]]));
+    ({fen:["es"],ipa:["es"],tf:["es"],etn:["op"],nar:["ep"],cas:["es","ad"],ia:["gf","op"],gen:["es"]})[dis].forEach(t=>tec.add(t));
+    tec.add("dc");tec.add("fc");}
+  else tec.add("ad");
+  const ana={fen:"fh",ipa:"afi",tf:"cod",etn:"acc",nar:"nar",cas:"atr",ia:"atr",gen:"atr",qma:"sin"}[dis];
+  const d={dis,log,ana,tec:[...tec],
+    par:dis==="ia"?"soc":"int",
+    alc:/^explor/.test(og)?"exp":/^(describir|caracterizar|identificar)/.test(og)?"des":"com",
+    tipo:/implementaci|mejorar|intervenci|propuesta|modelo|aplicad/.test(T)?"apl":"bas",
+    tmp:/momentos|semestre|ciclo acad|seguimiento|longitudinal/.test(T)?"lon":"tra",
+    mod:/h[ií]brid/.test(T)?"hib":/virtual|en l[ií]nea|remot/.test(T)?"vir":"pre",
+    caso:/programas|secciones|unidades|sedes|escuelas/.test(T)?"inc":/\bcasos\b|instituciones/.test(T)?"mul":"hol",
+    jus:dis==="tf"?"sat":dis==="qma"?"jui":"pod",
+    rig:["cre","trf","dep","cnf"],
+    eti:["ci","seu","res","dev","com"].concat(/menores|niñ[oa]s|adolescent|escolares/.test(T)?["as"]:[])};
+  setMet(d);
+  if(silent)return;
+  syncSize();save();
+  $("sugMsg").hidden=false;
+  $("sugMsg").textContent=`Diseño sugerido: ${lab("dis",dis)}, porque ${why}. Investigación ${lab("tipo",d.tipo).toLowerCase()}, de alcance ${lab("alc",d.alc).toLowerCase()} y lógica ${lab("log",d.log).toLowerCase()}. Revise cada opción antes de construir la propuesta.`;
+}
+
+/* alertas de coherencia entre opciones */
+function alertas(d){
+  const A=[],w=t=>A.push(["w",t]),o=t=>A.push(["o",t]);
+  const n=parseInt($("nPrev").value,10)||0,z=SIZES.find(x=>x.k===$("diseno").value),s=muestraSel();
+  if(d.jus==="sat"&&d.ana==="atr")w("La saturación es incoherente con el análisis temático reflexivo (Braun y Clarke, 2021); conviene justificar el tamaño por poder de información o por juicio situado.");
+  if(d.dis==="tf"&&d.log==="ded")w("La teoría fundamentada desarrolla teoría desde el material empírico (Flick, 2026, glosario); una lógica deductiva contradice ese propósito.");
+  if(d.dis==="tf"&&d.jus!=="sat")o("En teoría fundamentada el cierre del campo suele justificarse por saturación teórica (Flick, 2026, glosario).");
+  if(d.log!=="ind"&&!val("marco"))w("La lógica deductiva o abductiva requiere categorías a priori; complete el marco teórico del paso 1 (Robinson y Bailey-Rodriguez, 2026, p. 369).");
+  if(d.par==="pos"&&d.log==="ind")w("El enfoque cualitativo deductivo trabaja con lógica deductiva o abductiva (Robinson y Bailey-Rodriguez, 2026, p. 369).");
+  if(d.dis==="ia"&&d.par!=="soc")o("La investigación-acción une indagación y cambio con participación colaborativa (White y Cooper, 2022, p. 388); suele situarse en el paradigma sociocrítico.");
+  if(d.dis==="etn"&&!d.tec.includes("op"))w("La etnografía requiere observación participante prolongada en el escenario.");
+  if((d.dis==="fen"||d.dis==="ipa")&&!d.tec.some(t=>t==="es"||t==="ep"))w("Los diseños fenomenológicos se apoyan en entrevistas sobre la experiencia vivida; añada entrevista semiestructurada o en profundidad.");
+  if(d.dis==="nar"&&!d.tec.includes("ep"))o("El diseño narrativo suele recoger los relatos con entrevistas en profundidad.");
+  if(d.dis==="qma"&&d.tec.some(t=>!["ad","dc"].includes(t)))w("El metaanálisis cualitativo trabaja con hallazgos publicados (Timulak y Creaner, 2023, p. 4); las técnicas de campo no corresponden.");
+  const PROPIO={cod:"tf",afi:"ipa",fh:"fen",sin:"qma"};
+  if(PROPIO[d.ana]&&PROPIO[d.ana]!==d.dis)w(`La estrategia «${lab("ana",d.ana)}» corresponde al diseño «${lab("dis",PROPIO[d.ana])}».`);
+  if(!d.tec.length)w("No hay técnicas de recolección seleccionadas.");
+  else if(d.tec.length===1)o("Con una sola técnica la triangulación queda limitada a fuentes y momentos (Flick, 2026, glosario).");
+  if(!d.eti.includes("ci"))w("Falta el consentimiento informado, requisito de una investigación éticamente sólida (Flick, 2026, glosario).");
+  if(n&&z&&z.min!=null&&d.dis!=="qma"){
+    if(n<z.min)o(`El tamaño previsto (${n}) está por debajo del rango orientativo de «${z.n}» (${z.min}–${z.max}); justifíquelo con la profundidad de los casos.`);
+    else if(n>z.max)o(`El tamaño previsto (${n}) supera el rango orientativo de «${z.n}» (${z.min}–${z.max}); justifique la amplitud o revise si la saturación llegaría antes.`);}
+  if(/teórica/.test(s.o.t)&&d.dis!=="tf")o("La muestra teórica es propia de la teoría fundamentada; en otro diseño conviene explicar su uso.");
+  if(!A.length)o("No se detectan incoherencias entre las opciones elegidas.");
+  return A;
+}
+
+/* técnica de cada categoría ajustada a las técnicas marcadas */
+function tecCat(c,d){
+  const t=tecnica(c)[0],h=k=>d.tec.includes(k);
+  if(t==="Observación participante"&&!h("op")&&h("on"))return "Observación no participante";
+  if(t==="Entrevista semiestructurada"&&!h("es")&&h("ep"))return "Entrevista en profundidad";
+  if(t==="Análisis documental"&&!h("ad")&&h("ap"))return "Análisis de producciones";
+  return t;
+}
+
+/* redacción de la propuesta: un apartado por decisión metodológica */
+function propuesta(){
+  const d=getMet(),C=categorias(),O=lines(val("objesp")),s=muestraSel(),z=SIZES.find(x=>x.k===$("diseno").value),n=parseInt($("nPrev").value,10)||0;
+  const amb=esc(lc1(val("ambito")||"el ámbito del estudio")),escn=esc(noDot(val("escenario")||"el escenario del estudio")),tit=esc(val("titulo")||"Propuesta metodológica");
+  const P=t=>`<p>${t}</p>`;let k=0;const sec=t=>`<h3>3.${++k}. ${t}</h3>`;
+  let h=`<h4>${tit}</h4><p class="note" style="font-family:var(--f-body)">Capítulo de metodología generado con los parámetros de la página, ${new Date().toLocaleDateString("es-PE")}.</p>`;
+
+  const PAR={int:"interpretativo-constructivista, que entiende la realidad como construida en los significados que los participantes atribuyen a su experiencia (Lincoln y Guba, 2000); este paradigma surgió como contrapeso al positivismo propio de la investigación cuantitativa (Moser y Korstjens, 2017, p. 271)",
+    soc:"sociocrítico, que une la comprensión del fenómeno con la transformación de la práctica y la participación de los implicados (White y Cooper, 2022, p. 388)",
+    pos:"pospositivista en su variante cualitativa deductiva, que contrasta un marco teórico previo con datos cualitativos (Robinson y Bailey-Rodriguez, 2026, p. 369)",
+    pra:"pragmático, que selecciona los métodos por su utilidad para responder la pregunta de investigación, con apertura a combinar enfoques (Vega-Malagón et al., 2014, p. 523)"};
+  const LOG={ind:"La lógica es inductiva: las categorías se construyen a partir de los datos (Mihas, 2023, p. 303).",
+    abd:"La lógica es abductiva: las categorías a priori del marco teórico operan como conceptos sensibilizadores y se mantiene la apertura a categorías emergentes (Mihas, 2023, p. 303).",
+    ded:"La lógica es deductiva: el análisis contrasta el marco teórico previo mediante preguntas de tipo deductivo y no mediante hipótesis (Robinson y Bailey-Rodriguez, 2026, p. 370)."};
+  h+=sec("Enfoque y paradigma")+P(`La investigación adopta el enfoque cualitativo, porque estudia el fenómeno en profundidad y de forma holística, con materiales narrativos ricos y un diseño flexible, sin manipular ni cuantificar variables predefinidas (Moser y Korstjens, 2017, p. 271). Se sitúa en el paradigma ${PAR[d.par]}. ${LOG[d.log]} La posición epistemológica, la metodología y los métodos se eligieron de forma coherente entre sí (Singh, 2015, p. 133).`);
+
+  const TIPO={bas:`básica, porque amplía el conocimiento sobre ${amb}`,apl:`aplicada, porque sus resultados se orientan a mejorar la práctica en ${amb}`};
+  const ALC={exp:"exploratorio, porque indaga un fenómeno poco estudiado en este contexto",des:"descriptivo, porque detalla cómo se manifiesta el fenómeno y cuáles son sus rasgos",com:"interpretativo-comprensivo, porque busca comprender los significados que los participantes atribuyen a su experiencia"};
+  const TMP={tra:"Es transversal: la información se recoge en un solo momento.",lon:"Es longitudinal: la información se recoge en dos o más momentos, lo que permite seguir los cambios en la experiencia de los participantes."};
+  h+=sec("Tipo y alcance")+P(`Es una investigación ${TIPO[d.tipo]}, de alcance ${ALC[d.alc]}. ${TMP[d.tmp]}`);
+
+  const CASO={hol:"único holístico",inc:"único con unidades de análisis incrustadas",mul:"múltiple"};
+  const DIS={fen:"El diseño es fenomenológico hermenéutico, orientado a describir e interpretar la esencia de las experiencias vividas. Sigue cuatro etapas: clarificación de los presupuestos del investigador, recogida de la experiencia vivida, reflexión sobre esa experiencia (etapa estructural) y escritura del texto fenomenológico (Fuster Guillen, 2019, p. 217).",
+    ipa:"El diseño es el análisis fenomenológico interpretativo (AFI), que articula fenomenología, hermenéutica e ideografía para examinar cómo cada participante da sentido a su experiencia (Batzoglou, 2024, p. 459).",
+    tf:"El diseño es la teoría fundamentada: busca desarrollar una teoría a partir del análisis del material empírico (Flick, 2026, glosario), con recolección y análisis simultáneos e iterativos hasta alcanzar la saturación (White y Cooper, 2022, p. 340). Responde preguntas sobre qué activa, sostiene o desestabiliza un proceso complejo (Mihas, 2023, p. 308).",
+    etn:"El diseño es etnográfico: estudia la cultura compartida por el grupo mediante una inmersión prolongada en el escenario; los memos permiten examinar los espacios culturales como totalidades y la codificación identifica sus componentes (Mihas, 2023, p. 307).",
+    nar:"El diseño es narrativo: recoge relatos de los participantes para transferir y traducir saberes no cuantificables, como la experiencia (White y Cooper, 2022, p. 98), y analiza su forma y su contenido (Mihas, 2023, p. 302).",
+    cas:`El diseño es un estudio de caso ${CASO[d.caso]} (Stake, 1995; Yin, 2018). El caso está acotado en tiempo y lugar y se estudia en su contexto real (Mihas, 2023, p. 306); su escenario y sus participantes se describen en el apartado siguiente.`,
+    ia:"El diseño es la investigación-acción: investiga sistemáticamente la situación social estudiada a la vez que promueve el cambio y la participación colaborativa de los implicados; la reflexión crítica une ambas funciones (White y Cooper, 2022, p. 388). Se organiza en ciclos de diagnóstico, planificación, acción y reflexión.",
+    gen:"El diseño es cualitativo descriptivo-interpretativo, con análisis temático, una práctica que no está atada a una sola epistemología o paradigma (Mihas, 2023, p. 304).",
+    qma:"El diseño es un metaanálisis cualitativo: un análisis secundario de los hallazgos de estudios cualitativos primarios sobre el mismo fenómeno, que incluye la evaluación de su calidad y ofrece una visión de conjunto del campo (Timulak y Creaner, 2023, p. 4)."};
+  h+=sec("Diseño de investigación")+P(DIS[d.dis]);
+
+  const MOD={pre:"presencial",vir:"virtual",hib:"híbrida"},U=unitsSel();
+  h+=sec("Escenario y participantes")+P(`${d.dis==="qma"?"Corpus":"Escenario y participantes"}: ${escn}. ${d.dis==="qma"?"":`La recolección se realiza en modalidad ${MOD[d.mod]}.`}${U.length&&d.dis!=="qma"?` Además de las personas, se consideran como unidades de análisis: ${U.join(", ").toLowerCase()} (Hernández-Sampieri et al., 2014).`:""}`);
+
+  const JUS={sat:"El tamaño final se fija por saturación teórica: la recolección concluye cuando más datos sobre una categoría ya no producen nuevas ideas (Flick, 2026, glosario).",
+    pod:"El tamaño se justifica por el poder de información, según cinco rasgos del estudio: amplitud del objetivo, especificidad de la muestra, uso de teoría, calidad del diálogo y estrategia de análisis (Malterud et al., 2016).",
+    jui:"El tamaño se decide como un juicio situado sobre la riqueza de los datos y no por saturación, concepto incoherente con el análisis temático reflexivo (Braun y Clarke, 2021)."};
+  let m;
+  if(d.dis==="qma") m=`La muestra está formada por estudios cualitativos primarios que cumplen criterios explícitos de inclusión y de calidad (Timulak y Creaner, 2023, p. 4).${n?` Se prevé analizar alrededor de ${n} estudios.`:""}`;
+  else{
+    m=`El muestreo es no probabilístico e intencional: los participantes no se eligen mediante un procedimiento aleatorio, sino por sus características específicas (Flick, 2026, glosario), y su valor reside en el significado informativo de cada caso y no en la representatividad estadística (Robinson y Bailey-Rodriguez, 2026, p. 374). Se emplea una ${lc1(s.o.t)}: ${lc1(noDot(s.o.d))} (Hernández-Sampieri et al., 2014${/variación/.test(s.o.t)?"; Patton, 2015":""}).`;
+    if(s.vol)m+=" Se complementa con voluntarios, porque es difícil obtener casos.";
+    if(n)m+=` Se prevén ${n} participantes.${z&&z.min!=null?` Como referencia, el rango orientativo para «${z.n}» es de ${z.min} a ${z.max}. Fuentes del rango: ${noDot(z.src)}.`:""}`;
+  }
+  h+=sec("Muestreo y tamaño de la muestra")+P(`${m} ${JUS[d.jus]}`);
+
+  h+=sec("Categorías y subcategorías")+P(`Las categorías se derivan del marco teórico y se alinean con los objetivos específicos en la matriz de categorización. ${d.log==="ind"?"Funcionan como punto de partida provisional y el análisis puede reformularlas.":"Durante el análisis se mantiene la apertura a categorías emergentes."}`)
+    +`<div class="tbl"><table><thead><tr><th>Objetivo específico</th><th>Categoría</th><th>Subcategorías</th><th>Técnica</th></tr></thead><tbody>${C.map((c,i)=>`<tr><td>${esc(O[i]||"")}</td><td><b>${esc(c.cat)}</b></td><td>${esc(c.subs.join("; ")||"Por definir")}</td><td>${tecCat(c,d)}</td></tr>`).join("")||`<tr><td colspan="4"><i>Sin categorías: complete el paso 1.</i></td></tr>`}</tbody></table></div>`;
+
+  const TD={es:"preguntas formuladas de antemano que pueden plantearse en orden variable y reformularse, para que el participante despliegue su punto de vista (Flick, 2026, glosario). La guía enmarca los temas, mejora la comparabilidad de los datos y estructura la conversación (Misoch, 2019, p. 66); se organiza en apertura, preguntas centrales por subcategoría y cierre, en sesiones de alrededor de una hora (Hernández-Sampieri et al., 2014).",
+    ep:"encuentro abierto que sigue la lógica del participante y profundiza en su experiencia, con una guía temática general (Hernández-Sampieri et al., 2014).",
+    gf:"discusión grupal sobre las categorías del estudio, conducida con una guía de pocos bloques temáticos para no prolongar la sesión (Misoch, 2019, p. 164), con 6 a 10 participantes por grupo (Hernández-Sampieri et al., 2014).",
+    op:`inmersión en el escenario natural con registro en notas y diario de campo; papel del observador: ${$("o6").value.toLowerCase()} (Hernández-Sampieri et al., 2014).`,
+    on:"registro sistemático de las sesiones sin intervenir en ellas, con un protocolo construido a partir de las subcategorías: ambiente físico y social, actividades, artefactos y hechos relevantes.",
+    ad:d.dis==="qma"?"búsqueda sistemática, selección y extracción de los hallazgos de los estudios primarios, con una ficha de análisis.":"examen de documentos y registros institucionales vinculados con las categorías, con una ficha de análisis.",
+    ap:"análisis de los trabajos que producen los participantes, con una matriz derivada de las subcategorías.",
+    dc:"registro de decisiones, impresiones y reflexiones del investigador durante el trabajo de campo, que sostiene la reflexividad (Flick, 2026, glosario).",
+    fc:"instrumento auxiliar para describir el perfil de los participantes."};
+  const T=labs("tec",d.tec);
+  h+=sec("Técnicas e instrumentos de recolección")+(T.length?`<ul>${T.map(t=>`<li><b>${t[1]}</b> (${t[2].toLowerCase()}): ${TD[t[0]]}</li>`).join("")}</ul>`:P("No se han seleccionado técnicas en el paso 2."))
+    +(T.length>1?P("El uso de varias técnicas permite triangular la información por métodos, fuentes y momentos (Flick, 2026, glosario)."):"")
+    +(d.dis!=="qma"?P("Los instrumentos se validan por juicio de expertos y con una prueba piloto antes del trabajo de campo."):"");
+
+  const PR=d.dis==="qma"
+    ?["Definición de la pregunta y de los criterios de inclusión y exclusión.","Búsqueda sistemática en bases de datos académicas.","Selección de los estudios y evaluación de su calidad (Timulak y Creaner, 2023, p. 4).","Extracción de los hallazgos primarios en fichas de análisis.","Análisis, comparación y síntesis de los hallazgos.","Redacción del informe."]
+    :["Validación de los instrumentos por juicio de expertos y prueba piloto.","Gestión del acceso al escenario y presentación del estudio a los participantes.",`Firma del consentimiento informado${d.eti.includes("as")?" y del asentimiento de los menores":""}.`]
+      .concat(d.dis==="ia"?["Ciclos de diagnóstico, planificación, acción y reflexión con los participantes."]:[])
+      .concat([`Recolección ${d.tmp==="lon"?"en dos o más momentos":"en un solo momento"}, con grabación de audio y transcripción literal.`,"Análisis simultáneo a la recolección y evaluación de la muestra inicial para confirmarla o ajustarla (Hernández-Sampieri et al., 2014).",`Cierre del trabajo de campo según el criterio de ${lab("jus",d.jus).toLowerCase()}.`,`Análisis final, redacción del informe y ${d.eti.includes("dev")?"devolución de los resultados a los participantes":"comunicación de los resultados"}.`]);
+  h+=sec("Procedimiento")+`<ol>${PR.map(x=>`<li>${x}</li>`).join("")}</ol>`;
+
+  const AN={atr:"análisis temático reflexivo en seis fases: familiarización con los datos, codificación, generación de temas iniciales, revisión, definición y denominación de los temas y redacción del informe (Braun y Clarke, 2006, 2021).",
+    cod:"codificación abierta, axial y selectiva: la codificación inicial enlaza la recolección con el análisis (Flick, 2026, glosario) y la comparación constante entre incidentes, códigos y categorías conduce a una teoría desarrollada desde el material empírico.",
+    afi:"análisis fenomenológico interpretativo: primero caso por caso, con atención a la ideografía, y después entre casos para identificar temas compartidos (Batzoglou, 2024, p. 459).",
+    fh:"análisis fenomenológico hermenéutico: reflexión estructural sobre la experiencia vivida y escritura del texto fenomenológico, que integra la fisonomía individual y la grupal (Fuster Guillen, 2019, p. 217).",
+    acc:"análisis de contenido cualitativo: un libro de códigos inicial derivado de las preguntas, la guía de entrevista y los objetivos, con apertura a códigos inductivos e in vivo (Mihas, 2023, pp. 303–304).",
+    nar:"análisis narrativo de la forma y el contenido de los relatos y de cómo estos sirven a quien los cuenta (Mihas, 2023, p. 302).",
+    sin:"metasíntesis: extracción, comparación e integración de los hallazgos de los estudios primarios, ponderados por su calidad (Timulak y Creaner, 2023, p. 4)."};
+  const SW={atl:"ATLAS.ti",nvi:"NVivo",max:"MAXQDA",tag:"Taguette",man:"una matriz en hoja de cálculo"};
+  h+=sec("Análisis de la información")+P(`La información se procesa mediante ${AN[d.ana]} ${d.log!=="ind"?"Las categorías a priori orientan una primera codificación deductiva, que se complementa con códigos inductivos (Mihas, 2023, p. 303). ":""}Durante todo el proceso se redactan memos reflexivos y de comparación entre documentos (Mihas, 2023, p. 304). La reducción de los datos se registra en una matriz de tres columnas: código, aserto interpretativo y fragmento empírico. Se utiliza ${SW[d.sw]} como apoyo.`);
+
+  const RD={cre:"Credibilidad, mediante triangulación de técnicas, fuentes y momentos y comprobación de los resultados con los participantes (Flick, 2026, glosario).",trf:"Transferibilidad, mediante una descripción densa del escenario y de los participantes.",dep:"Dependencia, mediante el registro de las decisiones metodológicas que permita auditar el proceso.",cnf:"Confirmabilidad, mediante la reflexividad: el investigador reconoce su participación en la construcción de la situación estudiada (Flick, 2026, glosario).",cri:"Cristalización y criterios de calidad de Tracy (2010)."};
+  h+=sec("Criterios de rigor")+P("La calidad se valora con criterios de confiabilidad (Lincoln y Guba, 1985; Flick, 2026, glosario), elegidos según los fundamentos epistemológicos del estudio y no por traslado de estándares cuantitativos (Pownall, 2025, p. 556).")+(d.rig.length?`<ul>${d.rig.map(r=>`<li>${RD[r]}</li>`).join("")}</ul>`:"");
+
+  const ED={ci:"Consentimiento informado: acuerdo voluntario de colaborar con una investigación que se ha explicado y que el participante comprende (Flick, 2026, glosario).",as:"Asentimiento de los menores de edad y consentimiento de sus padres o tutores.",seu:"Seudonimización: los nombres de personas e instituciones se reemplazan por nombres ficticios que impidan identificarlos (Flick, 2026, glosario).",res:"Resguardo de grabaciones, transcripciones y matrices, con acceso restringido al equipo de investigación.",dev:"Devolución de los resultados a los participantes y a la institución.",com:"Aprobación del comité de ética institucional antes de iniciar el trabajo de campo."};
+  h+=sec("Consideraciones éticas")+(d.eti.length?`<ul>${d.eti.map(e=>`<li>${ED[e]}</li>`).join("")}</ul>`:P("No se han seleccionado consideraciones éticas en el paso 2."));
+
+  const used=REFS.filter(r=>r.m.test(h)).sort((a,b)=>a.t.localeCompare(b.t,"es"));
+  return h+`<h3>Referencias</h3><div class="refs">${used.map(r=>`<p>${r.t}</p>`).join("")}</div>`;
+}
+function construir(){
+  const A=alertas(getMet());
+  $("alertas").innerHTML=A.map(a=>`<div class="msg ${a[0]}"><b>${a[0]==="w"?"Alerta":"Nota"}:</b> ${esc(a[1])}</div>`).join("");
+  $("doc").innerHTML=propuesta();
+  $("cpProp").disabled=$("dlProp").disabled=false;
+  $("t4").textContent="Propuesta actualizada";setTimeout(()=>$("t4").textContent="",2500);
+  refreshCk();
+}
+function descargarDoc(){
+  const body=$("doc").innerHTML.replace(/<p class="note"[^>]*>.*?<\/p>/,"");
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${esc(val("titulo")||"Propuesta metodológica")}</title><style>body{font-family:"Times New Roman",serif;font-size:12pt;line-height:1.5}h4{font-size:14pt;text-align:center}h3{font-size:12pt;margin-top:14pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #999;padding:4pt;font-size:10.5pt;vertical-align:top;text-align:left}.refs p{margin-left:36pt;text-indent:-36pt}</style></head><body>${body}</body></html>`;
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff",html],{type:"application/msword"}));a.download="propuesta-metodologica.doc";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800);
+}
+function metResumen(){const d=getMet(),L=(k,a)=>labs(k,a).map(t=>t[1]).join(", ")||"—";
+  return `METODOLOGÍA
+Paradigma: ${lab("par",d.par)} · Lógica: ${lab("log",d.log)}
+Tipo: ${lab("tipo",d.tipo)} · Alcance: ${lab("alc",d.alc)} · ${lab("tmp",d.tmp)} · Modalidad: ${lab("mod",d.mod)}
+Diseño: ${lab("dis",d.dis)}${d.dis==="cas"?" ("+lab("caso",d.caso)+")":""}
+Técnicas: ${L("tec",d.tec)}
+Análisis: ${lab("ana",d.ana)} · Apoyo: ${lab("sw",d.sw)}
+Justificación del tamaño: ${lab("jus",d.jus)}
+Rigor: ${L("rig",d.rig)}
+Ética: ${L("eti",d.eti)}`}
+
+/* ejemplo de tesis doctoral: Lozano Martelo (2025), UMECIT. Diseño mixto convergente con predominio cualitativo;
+   se carga su componente cualitativo (fenomenológico hermenéutico). Texto literal de pregunta y objetivos (pp. 39-40);
+   categorías tomadas de la operacionalización (tablas 3 a 5, pp. 122-123), las bases conceptuales (2.2) y el capítulo VI */
+const TESIS={
+  titulo:"Evaluación del impacto del modelo pedagógico diseñado de competencias socioemocionales para la convivencia escolar en instituciones educativas públicas de Fundación, Magdalena",
+  ambito:"Educación básica y media: competencias socioemocionales y convivencia escolar",
+  escenario:"Estudiantes de 10.° y 11.° grado, docentes de secundaria y coordinadores de convivencia de cuatro instituciones educativas públicas del municipio de Fundación (Magdalena, Colombia), del programa «Todos a Aprender», 2024-2025",
+  problema:"En las instituciones educativas públicas de Fundación persisten los conflictos entre estudiantes, el irrespeto por la autoridad y casos de acoso escolar que no se atienden adecuadamente. Las estrategias pedagógicas para desarrollar competencias socioemocionales se aplican de forma débil, no hay docentes orientadores y el compromiso familiar es bajo, en un entorno de pobreza y desestructuración familiar. El resultado es un clima escolar conflictivo que afecta el aprendizaje, el bienestar emocional y la permanencia de los estudiantes, y no se conoce el impacto de un modelo pedagógico de competencias socioemocionales diseñado para mejorar la convivencia.",
+  pregunta:"¿Cuál ha sido el impacto del modelo pedagógico diseñado para la evaluación del desarrollo de competencias socioemocionales y mejora de la convivencia escolar de los estudiantes de las Instituciones educativas públicas de Fundación Magdalena?",
+  objgen:"Evaluar el impacto del modelo pedagógico diseñado para el desarrollo de competencias socioemocionales y mejora de la convivencia escolar de los estudiantes de las Instituciones educativas públicas de Fundación Magdalena.",
+  objesp:"Develar el tipo de habilidades que sirven de fundamento de los modelos pedagógico de competencias socioemocionales para mejorar la convivencia escolar de los estudiantes de las Instituciones educativas públicas del municipio de Fundación\nDescribir el nivel de competencias socioemocionales de los estudiantes en las Instituciones educativas públicas del municipio de Fundación\nDeterminar la función del desarrollo de las competencias socioemocionales que permite mejorar la convivencia de los estudiantes en las Instituciones educativas públicas objeto de estudio\nCaracterizar los factores que intervienen la convivencia escolar de los estudiantes en las Instituciones educativas públicas del municipio de Fundación\nDiseñar el modelo pedagógico de competencias socioemocionales que contribuya el mejoramiento de la convivencia escolar de los estudiantes de las Instituciones educativas públicas del municipio de Fundación\nImplementar el modelo pedagógico de competencias socioemocionales diseñado para el mejoramiento de la convivencia escolar de los estudiantes de las Instituciones educativas públicas del municipio de Fundación",
+  marco:"Habilidades socioemocionales: autoconciencia; autorregulación; motivación; empatía; habilidades sociales\nNivel de competencias socioemocionales: nivel alto; nivel medio; nivel bajo\nFunción de las competencias en la convivencia: resolución de conflictos; respeto mutuo; gestión de las emociones\nFactores que intervienen la convivencia: factores individuales; factores familiares; factores sociales\nDiseño del modelo pedagógico: fundamentación; objetivos; métodos\nImplementación y efectos en la convivencia: clima escolar positivo; relaciones interpersonales; sentido de pertenencia",
+  o1:"",o2:"",o3:"",o4:"",o5:""
+};
+const TESIS_MET={par:"pra",log:"abd",tipo:"apl",alc:"com",dis:"fen",caso:"hol",tmp:"lon",mod:"pre",ana:"acc",sw:"atl",jus:"jui",tec:["es","gf"],rig:["cre","cnf"],eti:["ci","as","seu","res"]};
+const TESIS_UNI=["Significados","Prácticas","Encuentros","Papeles o roles","Relaciones","Grupos","Organizaciones"];
+/* ejemplo de tesis cuantitativa: Toscano Achote (2024), UMECIT. Pregunta y objetivos literales (pp. 5-6); problema según la
+   síntesis de la p. 5; categorías tomadas de la operacionalización (tabla 3, p. 71), de la tabla 12 y del capítulo VI.
+   Su método (positivista, hipotético-deductivo, cuestionario Likert) no cabe en la página: el paso 2 se llena con sugerir() */
+const TOSCANO={
+  titulo:"Modelo pedagógico de enseñanza enfocada en el aprendizaje basado en proyectos para la formación de competencias tecnológicas en escenarios de educación superior en Quito, Ecuador",
+  ambito:"Educación superior tecnológica: aprendizaje basado en proyectos y competencias tecnológicas",
+  escenario:"Docentes y estudiantes de la carrera de Electrónica en tres instituciones de educación superior tecnológica de Quito (Ecuador): Instituto Superior Universitario Central Técnico, Instituto Superior Universitario Sucre e Instituto Tecnológico Universitario ISMAC, 2023",
+  problema:"En la carrera de Electrónica del Instituto Superior Universitario Central Técnico de Quito persisten enfoques pedagógicos tradicionales que limitan el desarrollo de competencias tecnológicas en los estudiantes. Faltan modelos pedagógicos adaptados al contexto y basados en metodologías activas como el Aprendizaje Basado en Proyectos (ABPy), lo que impide consolidar una formación pertinente, innovadora y alineada con las demandas del entorno laboral y social.",
+  pregunta:"¿Cómo un Modelo Pedagógico de enseñanza determinada enfocada en el Aprendizaje Basado en Proyectos favorece la formación de competencias tecnológicas en escenarios de Educación Superior en Quito, Ecuador?",
+  objgen:"Generar un Modelo Pedagógico de enseñanza enfocada en el Aprendizaje Basado en Proyectos para la formación de competencias tecnológicas en escenarios de Educación Superior en Quito, Ecuador.",
+  objesp:"Describir los modelos pedagógicos actualmente utilizados por los docentes en la carrera de Electrónica del Instituto Superior Universitario Central Técnico de Quito – Ecuador\nIdentificar las estrategias de enseñanza empleadas por los docentes de la carrera de Electrónica del Instituto Superior Universitario Central Técnico\nAnalizar las estrategias de aprendizaje utilizadas por los estudiantes de la carrera de Electrónica del Instituto Superior Universitario Central Técnico\nCaracterizar las fases de implementación del Aprendizaje Basado en Proyectos (ABPy) en el proceso formativo de la carrera de Electrónica en dicho Instituto\nDiagnosticar el nivel de competencias tecnológicas de los docentes y estudiantes involucrados en la carrera de Electrónica\nDiseñar la estructura de un modelo pedagógico de enseñanza determinado enfocado en el Aprendizaje Basado en Proyectos, dirigido al fortalecimiento de las competencias tecnológicas en Educación Superior",
+  marco:"Modelos pedagógicos en uso: enfoques tradicionales; metodologías activas\nEstrategias de enseñanza: aprendizaje centrado en el estudiante; pensamiento crítico; resolución de problemas\nEstrategias de aprendizaje: trabajo colaborativo; aprendizaje relevante; e-colaboración\nEtapas del ABPy: planificación; ejecución; cierre\nCompetencias tecnológicas: gestión de datos; apropiación tecnológica; pensamiento prospectivo; humanware; solución de problemas\nEstructura del modelo pedagógico: fundamentación; objetivos; método; cronograma por fases",
+  o1:"",o2:"",o3:"",o4:"",o5:""
+};
+const UNI_BASE=["Prácticas","Encuentros","Papeles o roles","Relaciones","Artefactos y documentos"];
+function cargarToscano(){
+  Object.entries(TOSCANO).forEach(([k,v])=>$(k).value=v);
+  $("diseno").value="cas";$("nPrev").value="";$("dificil").checked=false;
+  UNITS.forEach((u,i)=>$("u"+i).checked=UNI_BASE.includes(u[0]));renderRadial();
+  $("momA").checked=true;renderTree();const r=document.querySelector('input[name=int][value="0"]');if(r){r.checked=true;showRes();}
+  sugerir(false);
+  $("sugMsg").textContent="La tesis original es cuantitativa: paradigma positivista, método hipotético-deductivo con hipótesis, cuestionario tipo Likert de 36 ítems aplicado a 31 docentes y 800 estudiantes y análisis en SPSS (Toscano Achote, 2024). El paso 1 reproduce su planteamiento; las opciones de este paso son la sugerencia cualitativa de la página para el mismo problema. "+$("sugMsg").textContent;
+}
+function cargarTesis(){
+  Object.entries(TESIS).forEach(([k,v])=>$(k).value=v);
+  $("diseno").value="fen";$("nPrev").value=32;$("dificil").checked=false;
+  UNITS.forEach((u,i)=>$("u"+i).checked=TESIS_UNI.includes(u[0]));renderRadial();
+  $("momA").checked=true;renderTree();const r=document.querySelector('input[name=int][value="3"]');if(r){r.checked=true;showRes();}
+  setMet(TESIS_MET);
+}
+
+/* revelado de figuras: al entrar en pantalla, cada elemento aparece según su posición
+   (izquierda a derecha, de arriba abajo o, en la matriz, de derecha a izquierda como la inducción) */
+function prepAnim(box){
+  const svg=box.querySelector("svg.sv");if(!svg||!svg.viewBox.baseVal)return;
+  const dir=box.dataset.dir||"ltr",V=svg.viewBox.baseVal,span=(dir==="ttb"?V.height:V.width)||1;
+  svg.querySelectorAll("rect,circle,ellipse,line,path,polygon,text").forEach(el=>{
+    if(el.closest("defs,marker")||el.classList.contains("travel")||el.classList.contains("pulse")||el.classList.contains("flowln"))return;
+    let b;try{b=el.getBBox()}catch(e){return}
+    const pos=dir==="ttb"?b.y:dir==="rtl"?V.width-(b.x+b.width):b.x;
+    el.style.setProperty("--t",Math.round(Math.max(0,Math.min(1,pos/span))*1300)+"ms");
+    const cs=getComputedStyle(el),linea=(el.tagName==="line"||el.tagName==="path")&&cs.fill==="none"||el.tagName==="line";
+    if(linea&&cs.strokeDasharray==="none"){el.setAttribute("pathLength","1");el.classList.add("draw")}
+    else el.classList.add(el.hasAttribute("transform")?"a0":"a");
+  });
+}
+function initAnim(){
+  if(!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  document.documentElement.classList.add("js-anim");
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const f=e.target;prepAnim(f);f.classList.add("in");io.unobserve(f);setTimeout(()=>f.classList.add("done"),2600)}),{threshold:.2});
+  document.querySelectorAll("figure.fig,.hero,.timeline").forEach(f=>{f.classList.add("anim");io.observe(f)});
+}
+
+/* ayudas de redacción: marcador de posición, guía desplegable y revisión en vivo de cada campo */
+const words=v=>(String(v).trim().match(/\S+/g)||[]).length;
+const VCUAL=/^(comprender|interpretar|explorar|describir|caracterizar|analizar|develar|identificar|conocer|indagar|examinar|reconstruir|valorar)\b/i;
+const VCUANT=/^(medir|cuantificar|correlacionar|comprobar|demostrar|determinar|establecer la relaci)/i;
+const verbo=l=>(String(l).trim().split(/\s+/)[0]||"").toLowerCase().replace(/[^a-záéíóúñ]/g,"");
+const HELP={
+  titulo:{ph:"Fenómeno + participantes + contexto. Ej.: La interacción tutorial en estudiantes de primeros ciclos de una universidad de Lima",
+    tip:"<b>Fórmula:</b> fenómeno o categoría central + participantes + contexto (lugar y periodo); el diseño puede ir después de dos puntos.<br><b>Evite:</b> siglas sin desarrollar, términos de medición («efecto», «influencia», «relación entre») y frases de relleno («un estudio sobre»).",
+    ck:v=>{const n=words(v);if(!n)return["w","Pendiente: escriba el título."];if(/\b(efecto|influencia|incidencia|correlaci\w*|relaci[oó]n entre)\b/i.test(v))return["w","«Efecto», «influencia» o «relación entre» sugieren un estudio cuantitativo."];return n>25?["o",`${n} palabras: conviene acortarlo a 20 o 25 como máximo.`]:["ok",`${n} palabras.`]}},
+  ambito:{ph:"Área: tema. Ej.: Educación superior: tutoría académica",
+    tip:"Nombre breve del campo y del tema, separados por dos puntos. Encabeza el árbol categorial (figura 1) y la pregunta de apertura de la guía de entrevista.",
+    ck:v=>!words(v)?["w","Pendiente."]:(v.includes(":")?["ok","Área y tema definidos."]:["o","Separe el área y el tema con dos puntos."])},
+  escenario:{ph:"Quiénes + dónde + cuándo. Ej.: Estudiantes de II y IV ciclo y docentes tutores de una universidad privada de Lima, 2027-I",
+    tip:"<b>Incluya:</b> participantes principales (y complementarios, si los hay), institución o lugar, periodo y modalidad. Es la población de la que se extrae la muestra intencional, cuyos integrantes se eligen por sus características y no al azar <span class=\"cite\">(Flick, 2026, glosario)</span>.",
+    ck:v=>!words(v)?["w","Pendiente."]:(/\b(19|20)\d{2}\b|ciclo|semestre|periodo|año|trimestre/i.test(v)?["ok","Incluye participantes, lugar y periodo."]:["o","Indique el periodo (año, semestre o ciclo)."])},
+  problema:{ph:"Situación observada → evidencias → lo que aún no se conoce → por qué importa comprenderlo",
+    tip:"<b>Estructura sugerida:</b> (1) situación problemática observada en el escenario; (2) evidencias o antecedentes que la sustentan; (3) lo que aún no se conoce desde la perspectiva de los participantes; (4) relevancia de comprenderlo. Redacte en afirmaciones; la pregunta va en su propio campo. La investigación cualitativa estudia el fenómeno en profundidad, sin manipular variables <span class=\"cite\">(Moser y Korstjens, 2017, p. 271)</span>.",
+    ck:v=>{const n=words(v);if(!n)return["w","Pendiente."];if(v.includes("?"))return["w","Traslade las preguntas al campo «Pregunta general»."];if(/\b(variables?|hip[oó]tesis|muestra representativa|medir|correlaci\w*)\b/i.test(v))return["w","Términos como «variable» o «hipótesis» corresponden al enfoque cuantitativo."];return n<40?["o",`${n} palabras: desarrolle más el planteamiento (al menos 40).`]:["ok",`${n} palabras.`]}},
+  pregunta:{ph:"¿Cómo + verbo de experiencia o proceso + fenómeno + participantes + contexto?",
+    tip:"<b>Fórmula:</b> ¿Cómo (o qué significado, de qué manera) + verbo de experiencia o proceso (experimentan, construyen, perciben, se configura) + fenómeno + participantes + contexto?<br><b>Evite</b> preguntas de sí o no y de medición («¿en qué medida?», «¿cuál es la relación?»). Las preguntas orientan todo el diseño <span class=\"cite\">(Flick, 2026, prefacio)</span>; con teoría previa, prefiera preguntas deductivas a hipótesis <span class=\"cite\">(Robinson y Bailey-Rodriguez, 2026, p. 370)</span>.",
+    ck:v=>{const t=v.trim();if(!t)return["w","Pendiente."];if(!/^¿/.test(t)||!/\?$/.test(t))return["w","Use los signos de apertura y cierre: ¿…?"];if(/^¿\s*(existe|hay|es|son|puede|pueden|tiene|tienen)\b/i.test(t))return["w","Es una pregunta de sí o no; reformúlela como pregunta abierta."];if(/en qu[eé] medida|cu[aá]l es la relaci[oó]n|influye|efecto/i.test(t))return["w","La formulación remite a medición o a relación entre variables."];return /^¿\s*(c[oó]mo|qu[eé]|de qu[eé] (manera|modo|forma)|cu[aá]les|por qu[eé])/i.test(t)?["ok","Pregunta abierta, de corte cualitativo."]:["o","Comience con «¿Cómo…?», «¿Qué…?» o «¿De qué manera…?»."]}},
+  objgen:{ph:"Verbo en infinitivo + fenómeno + participantes + contexto. Ej.: Comprender cómo…",
+    tip:"<b>Verbos cualitativos:</b> comprender, interpretar, explorar, describir, caracterizar, analizar, develar.<br><b>Evite:</b> medir, determinar el efecto, correlacionar, comprobar o demostrar. El objetivo responde a la pregunta general con sus mismos términos.",
+    ck:v=>{const t=v.trim();if(!t)return["w","Pendiente."];if(VCUANT.test(t))return["w",`«${verbo(t)}» es un verbo de medición o comprobación.`];if(!/(ar|er|ir)$/.test(verbo(t)))return["w","Inicie con un verbo en infinitivo."];return VCUAL.test(t)?["ok",`Inicia con «${verbo(t)}», verbo de comprensión.`]:["o",`Inicia con «${verbo(t)}»; confirme que es un verbo de comprensión.`]}},
+  objesp:{ph:"Un objetivo por línea, en el orden de las categorías:\nDescribir…\nAnalizar…\nIdentificar…",
+    tip:"<b>Regla:</b> un objetivo por línea, en el mismo orden que las categorías del marco teórico; cada objetivo atiende una categoría o la relación entre dos. Entre dos y seis objetivos suele ser manejable. Use verbos en infinitivo de comprensión, no de medición.",
+    ck:v=>{const L=lines(v),C=categorias().length;if(!L.length)return["w","Pendiente."];const bad=L.filter(l=>VCUANT.test(l)||!/(ar|er|ir)$/.test(verbo(l)));if(bad.length)return["w",`${bad.length} objetivo(s) no empieza(n) con un verbo de comprensión en infinitivo.`];if(val("marco")&&L.length!==C)return["w",`${L.length} objetivos y ${C} categorías: deben coincidir para alinear la matriz.`];return L.length>6||L.length<2?["o",`${L.length} objetivos: lo habitual es entre 2 y 6.`]:["ok",`${L.length} objetivos alineados con ${C} categorías.`]}},
+  marco:{ph:"Categoría: subcategoría 1; subcategoría 2; subcategoría 3\nOtra categoría: subcategoría 1; subcategoría 2",
+    tip:"<b>Formato:</b> una categoría por línea, dos puntos y subcategorías separadas por punto y coma. Cada categoría necesita al menos dos subcategorías derivadas de la teoría, con nombres breves. Las categorías a priori forman un libro de códigos inicial que después se abre a códigos inductivos <span class=\"cite\">(Mihas, 2023, p. 303)</span>.",
+    ck:v=>{const L=lines(v);if(!L.length)return["o","Vacío: las categorías se derivarán de los objetivos específicos."];const sin=L.filter(l=>!l.includes(":")),C=categorias(),pocas=C.filter(c=>c.subs.length<2),ns=C.reduce((a,c)=>a+c.subs.length,0);if(sin.length)return["w",`${sin.length} línea(s) sin dos puntos: use «Categoría: sub1; sub2».`];return pocas.length?["o",`${pocas.length} categoría(s) con menos de dos subcategorías.`]:["ok",`${C.length} categorías · ${ns} subcategorías.`]}}
+};
+const OBSH={o1:["Ej.: distribución de aulas, mobiliario, iluminación, acústica, conectividad","Describa el lugar como lo vería alguien que nunca estuvo allí: espacios, objetos y condiciones."],
+  o2:["Ej.: grupos, jerarquías, vínculos entre estudiantes y docentes","Quiénes están, cómo se organizan y cómo se relacionan entre sí."],
+  o3:["Ej.: turnos de habla, preguntas, acuerdos, duración","Lo que hacen las personas, individualmente y en grupo, vinculado con las subcategorías."],
+  o4:["Ej.: fichas, plataforma virtual, materiales, celulares","Objetos y recursos que usan los participantes y para qué los usan."],
+  o5:["Ej.: incidentes críticos, reprogramaciones, conflictos","Sucesos fuera de lo habitual; regístrelos con fecha y hora."]};
+function addHelp(k,ph,tip){const el=$(k);el.placeholder=ph;el.setAttribute("aria-describedby","fb-"+k);
+  el.insertAdjacentHTML("afterend",`<p class="fb" id="fb-${k}" aria-live="polite"></p><details class="help"><summary>Ayuda para redactar</summary><div>${tip}</div></details>`)}
+function renderHelp(){Object.entries(HELP).forEach(([k,h])=>addHelp(k,h.ph,h.tip));Object.entries(OBSH).forEach(([k,h])=>addHelp(k,h[0],h[1]))}
+function checkFields(){
+  Object.entries(HELP).forEach(([k,h])=>{const r=h.ck($(k).value),fb=$("fb-"+k);fb.className="fb "+r[0];fb.textContent=r[1]});
+  Object.keys(OBSH).forEach(k=>{const n=words($(k).value),fb=$("fb-"+k);fb.className="fb "+(n?"ok":"o");fb.textContent=n?`${n} palabras.`:"Pendiente."});
+}
+
+/* checklist de cumplimiento: A a F se verifican con la página; G se registra a mano */
+const PROPIO_DIS={cod:"tf",afi:"ipa",fh:"fen",sin:"qma"};
+const CK_AUTO=[
+  {g:"A. Planteamiento",paso:"entrada",items:[
+    ["Título con fenómeno, participantes y contexto","titulo"],["Problema descrito en afirmaciones","problema"],["Pregunta general abierta y bien puntuada","pregunta"],
+    ["Objetivo general con verbo de comprensión","objgen"],["Objetivos específicos alineados con las categorías","objesp"],["Categorías con al menos dos subcategorías","marco"],["Escenario con participantes, lugar y periodo","escenario"]]},
+  {g:"B. Diseño metodológico",paso:"metodologia",items:[
+    ["Opciones sin alertas de incoherencia",()=>{const w=alertas(getMet()).filter(a=>a[0]==="w");return w.length?["w",`${w.length} alerta(s): véalas en el paso 6`]:["ok","Sin alertas"]}],
+    ["Lógica coherente con el marco teórico",()=>{const d=getMet();return d.log!=="ind"&&!val("marco")?["w","Falta el marco teórico"]:["ok",lab("log",d.log)]}],
+    ["Estrategia de análisis propia del diseño",()=>{const d=getMet();return PROPIO_DIS[d.ana]&&PROPIO_DIS[d.ana]!==d.dis?["w",`${lab("ana",d.ana)} con ${lab("dis",d.dis).toLowerCase()}`]:["ok",`${lab("dis",d.dis)} · ${lab("ana",d.ana).toLowerCase()}`]}]]},
+  {g:"C. Matriz de categorización",paso:"matriz",items:[
+    ["Cada categoría con técnica, instrumento y fuente",()=>{const n=categorias().length;return n?["ok",`${n} categorías en la matriz`]:["w","Sin categorías"]}],
+    ["Plantilla de codificación de tres columnas disponible",()=>categorias().length?["ok","Código, aserto y fragmento empírico"]:["w","Requiere categorías"]]]},
+  {g:"D. Muestreo y tamaño",paso:"muestreo",items:[
+    ["Tipo de muestra no probabilística definido",()=>["ok",muestraSel().o.t]],
+    ["Tamaño previsto registrado",()=>{const n=parseInt($("nPrev").value,10);return n?["ok",`${n} participantes`]:["w","Pendiente"]}],
+    ["Tamaño dentro del rango orientativo",()=>{const n=parseInt($("nPrev").value,10),z=SIZES.find(x=>x.k===$("diseno").value);if(!n)return["w","Pendiente"];if(z.min==null)return["ok","Diseño sin rango fijo"];return n>=z.min&&n<=z.max?["ok",`${n} dentro de ${z.min}–${z.max}`]:["o",`${n} fuera de ${z.min}–${z.max}: justifíquelo por ${lab("jus",getMet().jus).toLowerCase()}`]}],
+    ["Criterio de cierre del campo definido",()=>["ok",lab("jus",getMet().jus)]]]},
+  {g:"E. Recolección",paso:"recoleccion",items:[
+    ["Al menos una técnica de recolección",()=>{const t=getMet().tec;return t.length?["ok",labs("tec",t).map(x=>x[1]).join(", ")]:["w","Ninguna seleccionada"]}],
+    ["Triangulación con dos o más técnicas",()=>{const n=getMet().tec.length;return n>=2?["ok",`${n} técnicas`]:["w",`${n} técnica(s)`]}],
+    ["Guía con apertura, preguntas por subcategoría y cierre",()=>{if(!getMet().tec.some(t=>["es","ep","gf"].includes(t)))return["na","No se usan entrevistas ni grupos focales"];const q=preguntas().reduce((a,p)=>a+p.qs.length,0);return q?["ok",`${q} preguntas centrales generadas`]:["w","Sin categorías"]}],
+    ["Ficha de observación con sus cinco elementos",()=>{if(!getMet().tec.some(t=>["op","on"].includes(t)))return["na","No se usa observación"];const f=["o1","o2","o3","o4","o5"].filter(k=>!val(k)).length;return f?["w",`${f} elemento(s) vacío(s)`]:["ok","Cinco elementos descritos"]}],
+    ["Unidades de análisis complementarias",()=>{const u=unitsSel().length;return u?["ok",`${u} unidades seleccionadas`]:["o","Ninguna seleccionada"]}]]},
+  {g:"F. Rigor, ética y propuesta",paso:"propuesta",items:[
+    ["Tres o más criterios de rigor",()=>{const n=getMet().rig.length;return n>=3?["ok",`${n} criterios`]:["w",`${n} criterio(s)`]}],
+    ["Consentimiento informado previsto",()=>getMet().eti.includes("ci")?["ok","Previsto"]:["w","Falta"]],
+    ["Seudonimización y resguardo de los datos",()=>{const e=getMet().eti;return e.includes("seu")&&e.includes("res")?["ok","Previstos"]:["w","Incompleto"]}],
+    ["Aprobación del comité de ética prevista",()=>getMet().eti.includes("com")?["ok","Prevista"]:["o","No prevista"]],
+    ["Propuesta metodológica construida",()=>$("cpProp").disabled?["w","Pulse «Construir propuesta metodológica»"]:["ok","Generada"]]]}
+];
+const CK_MAN=[
+  ["g1","Instrumentos validados por juicio de expertos","Antes del campo"],["g2","Prueba piloto aplicada y guía ajustada","Antes del campo"],
+  ["g3","Autorización institucional de acceso al escenario","Antes del campo"],["g4","Aprobación del comité de ética obtenida","Antes del campo"],
+  ["g5","Consentimientos (y asentimientos) firmados y archivados","Antes del campo"],["g6","Entrevistas y sesiones grabadas y transcritas literalmente","Durante el campo"],
+  ["g7","Transcripciones seudonimizadas antes de compartirse","Durante el campo"],["g8","Memos analíticos y diario de campo al día","Durante el campo"],
+  ["g9","Muestra inicial evaluada tras las primeras entrevistas","Durante el campo"],["g10","Cierre del campo documentado según el criterio elegido","Durante el campo"],
+  ["g11","Matriz de codificación de tres columnas aplicada","Análisis"],["g12","Resultados comprobados con los participantes","Análisis"],
+  ["g13","Registro de decisiones disponible para auditoría","Análisis"],["g14","Respaldo seguro de grabaciones, transcripciones y matrices","Análisis"],
+  ["g15","Devolución de resultados a participantes e institución","Cierre"]];
+const ST={ok:["Cumple","s-ok"],o:["Revisar","s-rev"],w:["Pendiente","s-pen"],na:["No aplica","s-na"]};
+let CKSTATE=[],ckT=0;
+function loadCkMan(){try{return JSON.parse(localStorage.getItem("dmc-ck")||"{}")||{}}catch(e){return{}}}
+function saveCkMan(o){try{localStorage.setItem("dmc-ck",JSON.stringify(o))}catch(e){}}
+function ckRes(it){try{return typeof it[1]==="string"?HELP[it[1]].ck($(it[1]).value):it[1]()}catch(e){return["w","No verificable todavía"]}}
+function renderCk(){
+  const man=loadCkMan(),foco=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.ck:null;let ok=0,tot=0,h="";CKSTATE=[];
+  CK_AUTO.forEach(G=>{
+    h+=`<div class="box ckg"><h4>${G.g}<a href="#${G.paso}" class="cklink">Ir al paso</a></h4><ul class="cklist">`;
+    G.items.forEach(it=>{const r=ckRes(it),st=ST[r[0]]||ST.w;if(r[0]!=="na"){tot++;if(r[0]==="ok")ok++}
+      CKSTATE.push([G.g,it[0],st[0],r[1]]);
+      h+=`<li><span class="st ${st[1]}">${st[0]}</span><span><b>${it[0]}</b><small>${esc(r[1])}</small></span></li>`});
+    h+=`</ul></div>`});
+  h+=`<div class="box ckg"><h4>G. Trabajo de campo y análisis<span class="hint">registro manual</span></h4><ul class="cklist">`;
+  CK_MAN.forEach(m=>{const on=!!man[m[0]];tot++;if(on)ok++;CKSTATE.push(["G. Trabajo de campo y análisis",m[1],on?"Hecho":"Por hacer",m[2]]);
+    h+=`<li><label class="ck"><input type="checkbox" data-ck="${m[0]}"${on?" checked":""}><span><b>${m[1]}</b><small>${m[2]}</small></span></label></li>`});
+  $("ck").innerHTML=h+`</ul></div>`;
+  const pct=tot?Math.round(ok/tot*100):0;
+  $("ckBar").style.width=pct+"%";$("ckPct").textContent=`${pct} % cumplido · ${ok} de ${tot} ítems aplicables`;
+  $("ck").querySelectorAll("input[data-ck]").forEach(c=>c.addEventListener("change",e=>{e.stopPropagation();const o=loadCkMan();o[c.dataset.ck]=c.checked;saveCkMan(o);renderCk()}));
+  if(foco){const f=$("ck").querySelector(`[data-ck="${foco}"]`);if(f)f.focus()}
+}
+function refreshCk(){if(!$("ck"))return;cancelAnimationFrame(ckT);ckT=requestAnimationFrame(()=>{checkFields();renderCk()})}
+function ckTexto(){renderCk();return "CHECKLIST DE CUMPLIMIENTO DE PROCEDIMIENTOS\n"+$("ckPct").textContent+"\n"+CKSTATE.map(r=>`[${r[2]}] ${r[0]} · ${r[1]}: ${r[3]}`).join("\n")}
+
+/* exportación */
+function tsv(){
+  const C=categorias(),O=lines(val("objesp"));
+  const h=["Objetivo específico","Categoría","Subcategorías","Técnica","Instrumento","Fuente"];
+  return [h.join("\t")].concat(C.map((c,i)=>{const t=tecnica(c);return [O[i]||"",c.cat,c.subs.join("; "),t[0],t[1],t[2]].join("\t")})).join("\n");
+}
+function informe(){
+  const s=muestraSel(),z=SIZES.find(x=>x.k===$("diseno").value),P=preguntas();
+  return `DISEÑO METODOLÓGICO CUALITATIVO
+Ámbito temático: ${val("ambito")}
+Escenario y participantes: ${val("escenario")}
+Problema: ${val("problema")}
+Pregunta general: ${val("pregunta")}
+Objetivo general: ${val("objgen")}
+
+${metResumen()}
+
+MATRIZ DE CATEGORIZACIÓN
+${tsv()}
+
+MUESTREO
+Tipo: no probabilístico (dirigido)
+Momento: ${s.mom==="antes"?"antes":"después"} de la recolección
+Intención: ${s.o.i}
+Muestra: ${s.o.t}${s.vol?" + "+VOL.t:""}
+Diseño: ${z.n}. Rango orientativo: ${z.min??"—"}–${z.max??"—"}. ${z.src}.
+Tamaño previsto: ${$("nPrev").value||"—"} (final sujeto a saturación)
+
+RECOLECCIÓN
+Unidades de análisis complementarias: ${unitsSel().join(", ")}
+Guía de entrevista:
+- Apertura: rol y tiempo de participación.
+${P.map(p=>p.qs.map(q=>`- [${p.cat}] ${q}`).join("\n")).join("\n")}
+- Cierre: aspectos no abordados.
+
+Ficha de observación (${$("o6").value}):
+- Ambiente físico: ${val("o1")}
+- Ambiente social y humano: ${val("o2")}
+- Actividades individuales y colectivas: ${val("o3")}
+- Artefactos: ${val("o4")}
+- Hechos relevantes: ${val("o5")}
+
+${ckTexto()}
+
+Referencia base: Hernández-Sampieri, R., Fernández, C. y Baptista, P. (2014). Metodología de la investigación (6.ª ed.). McGraw-Hill.`;
+}
+async function copiar(txt,toast){
+  try{await navigator.clipboard.writeText(txt);$(toast).textContent="Copiado al portapapeles";$("fallback").hidden=true;}
+  catch(e){const f=$("fallback");f.value=txt;f.hidden=false;f.select();$(toast).textContent="Seleccione el texto y cópielo con Ctrl+C";}
+  setTimeout(()=>$(toast).textContent="",3500);
+}
+
+/* persistencia local */
+function save(){try{const d={};FIELDS.forEach(f=>d[f]=$(f).value);d.n=$("nPrev").value;d.dis=$("diseno").value;d.met=getMet();localStorage.setItem("dmc-v1",JSON.stringify(d));}catch(e){}refreshCk();}
+function load(){try{const d=JSON.parse(localStorage.getItem("dmc-v1")||"null");if(!d)return false;FIELDS.forEach(f=>{if(d[f]!=null)$(f).value=d[f]});if(d.n)$("nPrev").value=d.n;if(d.dis)$("diseno").value=d.dis;if(d.met)setMet(d.met);else sugerir(true);return true;}catch(e){return false}}
+function cargarEj(){Object.entries(EJ).forEach(([k,v])=>$(k).value=v);Object.entries(OBS).forEach(([k,v])=>$(k).value=v);$("o6").value="Participación moderada";$("diseno").value="ent";$("nPrev").value=12;}
+
+/* init */
+renderSizes();renderUnits();renderMet();renderProb();renderCrit();renderRadial();renderRefs();renderHelp();
+$("units").addEventListener("change",renderRadial);
+document.addEventListener("input",refreshCk);document.addEventListener("change",refreshCk);
+if(!load()){cargarEj();sugerir(true);}
+renderTree();renderGauge();generar();
+$("btnGen").addEventListener("click",()=>{generar();$("t1").textContent="Diseño actualizado";setTimeout(()=>$("t1").textContent="",2500);location.hash="matriz";});
+$("btnEj").addEventListener("click",()=>{cargarEj();$("sugMsg").hidden=true;sugerir(true);renderTree();renderGauge();generar();$("t1").textContent="Ejemplo de tutoría cargado";setTimeout(()=>$("t1").textContent="",2500);});
+$("btnTesis").addEventListener("click",()=>{cargarTesis();renderGauge();generar();$("sugMsg").hidden=true;$("t1").textContent="Tesis Lozano cargada (componente cualitativo)";setTimeout(()=>$("t1").textContent="",3000);});
+$("btnToscano").addEventListener("click",()=>{cargarToscano();renderGauge();generar();$("t1").textContent="Tesis Toscano cargada: revise el aviso del paso 2";setTimeout(()=>$("t1").textContent="",4000);});
+$("btnClr").addEventListener("click",()=>{["titulo","ambito","escenario","problema","pregunta","objgen","objesp","marco"].forEach(f=>$(f).value="");generar();});
+$("btnSug").addEventListener("click",()=>sugerir(false));
+$("btnProp").addEventListener("click",construir);
+$("btnProp1").addEventListener("click",()=>{construir();location.hash="propuesta";});
+$("cpProp").addEventListener("click",()=>copiar($("doc").innerText,"t4"));
+$("dlProp").addEventListener("click",descargarDoc);
+$("cpCk").addEventListener("click",()=>copiar(ckTexto(),"t5"));
+initAnim();
+document.querySelectorAll('input[name=mom]').forEach(r=>r.addEventListener("change",renderTree));
+$("dificil").addEventListener("change",showRes);
+$("diseno").addEventListener("change",()=>{renderGauge();save()});
+$("nPrev").addEventListener("input",()=>{renderGauge();save()});
+FIELDS.forEach(f=>$(f).addEventListener("input",save));
+$("cpMat").addEventListener("click",()=>copiar(tsv(),"t2"));
+$("cpAll").addEventListener("click",()=>copiar(informe(),"t2"));
+</script>
+
+</body></html>

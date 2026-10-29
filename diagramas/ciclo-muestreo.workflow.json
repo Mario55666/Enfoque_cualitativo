@@ -1,0 +1,185 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Ciclo del muestreo cualitativo hasta la saturación",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "external": {
+          "label": "Punto de partida"
+        },
+        "backend": {
+          "label": "Fase del muestreo"
+        },
+        "security": {
+          "label": "Ajuste de la muestra"
+        },
+        "frontend": {
+          "label": "Cierre del campo"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "fases",
+        "label": "Fases del muestreo",
+        "focus": [
+          "unidades",
+          "inicial",
+          "recoleccion",
+          "evaluacion",
+          "saturacion"
+        ],
+        "note": "De las unidades iniciales al cierre del campo."
+      },
+      {
+        "id": "ajuste",
+        "label": "Ajuste in situ",
+        "focus": [
+          "evaluacion",
+          "ajuste",
+          "recoleccion"
+        ],
+        "note": "Mientras el análisis aporte, la muestra se ajusta."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "fases",
+      "label": "Fases del muestreo"
+    },
+    {
+      "id": "ajustes",
+      "label": "Ajuste in situ",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "unidades",
+    "inicial",
+    "recoleccion",
+    "evaluacion",
+    "saturacion"
+  ],
+  "nodes": [
+    {
+      "id": "unidades",
+      "lane": "fases",
+      "col": 0,
+      "type": "external",
+      "label": "Unidades iniciales",
+      "sublabel": "casos y escenarios",
+      "width": 140
+    },
+    {
+      "id": "inicial",
+      "lane": "fases",
+      "col": 1,
+      "type": "backend",
+      "label": "Muestra inicial",
+      "sublabel": "informantes clave",
+      "width": 140
+    },
+    {
+      "id": "recoleccion",
+      "lane": "fases",
+      "col": 2,
+      "type": "backend",
+      "label": "Recolección",
+      "sublabel": "entrevistas y notas",
+      "width": 140
+    },
+    {
+      "id": "evaluacion",
+      "lane": "fases",
+      "col": 3,
+      "type": "backend",
+      "label": "Análisis",
+      "sublabel": "¿surgen categorías?",
+      "width": 140
+    },
+    {
+      "id": "saturacion",
+      "lane": "fases",
+      "col": 4,
+      "type": "frontend",
+      "label": "Saturación",
+      "sublabel": "retiro del campo",
+      "width": 140
+    },
+    {
+      "id": "ajuste",
+      "lane": "ajustes",
+      "col": 3,
+      "type": "security",
+      "label": "Ajuste de la muestra",
+      "sublabel": "nuevos criterios",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "unidades-inicial",
+      "from": "unidades",
+      "to": "inicial",
+      "variant": "emphasis"
+    },
+    {
+      "id": "inicial-recoleccion",
+      "from": "inicial",
+      "to": "recoleccion",
+      "variant": "emphasis"
+    },
+    {
+      "id": "recoleccion-evaluacion",
+      "from": "recoleccion",
+      "to": "evaluacion",
+      "variant": "emphasis"
+    },
+    {
+      "id": "evaluacion-saturacion",
+      "from": "evaluacion",
+      "to": "saturacion",
+      "label": "redundancia",
+      "variant": "emphasis"
+    },
+    {
+      "id": "evaluacion-ajuste",
+      "from": "evaluacion",
+      "to": "ajuste",
+      "label": "aún aporta",
+      "variant": "security",
+      "role": "branch"
+    },
+    {
+      "id": "ajuste-recoleccion",
+      "from": "ajuste",
+      "to": "recoleccion",
+      "label": "nuevos casos",
+      "variant": "dashed",
+      "role": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Representatividad conceptual",
+      "items": [
+        "Casos típicos, extremos, de variación máxima o teóricos",
+        "La muestra se revisa con los primeros datos"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Cierre del campo",
+      "items": [
+        "Se sale del campo cuando los datos se vuelven redundantes",
+        "Ya no se generan ni modifican categorías"
+      ]
+    }
+  ]
+}
